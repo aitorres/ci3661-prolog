@@ -98,9 +98,28 @@ rating("Kuroshitsuji", 2).
 rating("Yu-Gi-Oh!", 3).
 rating("Digimon", 4).
 
-    popularidad("Dragon Ball", 7).
-    popularidad("Naruto", 5).
-    popularidad("Bleach", 8).
-    popularidad("HunterXHunter", 3).
-    popularidad("Hamtaro", 10).
-    popularidad("Full Metal Alchemist", 1).
+/**
+ * popularidad(X:string, Y:int)
+ *
+ * popularidad/2 acierta si Y es la popularidad entre 1 y 10 del animé X;
+*                si no se pasa, Y se unifica con la popularidad del animé X;
+*                si no se pasa, X se unifica con algún animé cuya 
+*                popularidad sea Y.
+ */
+popularidad("Dragon Ball", 7).
+popularidad("Naruto", 5).
+popularidad("Bleach", 8).
+popularidad("HunterXHunter", 3).
+popularidad("Hamtaro", 10).
+popularidad("Full Metal Alchemist", 1).
+popularidad("Suzumiya Haruhi no Yuutsu", 6).
+popularidad("Sword Art Online", 9).
+popularidad("Another", 5).
+popularidad("Death Note", 10).
+popularidad("Attack on Titan", 10).
+popularidad("Steins;Gate", 4).
+popularidad("Pokémon", 10).
+popularidad("InuYasha", 8).
+popularidad("Kuroshitsuji", 3).
+popularidad("Yu-Gi-Oh!", 7).
+popularidad("Digimon", 8).
