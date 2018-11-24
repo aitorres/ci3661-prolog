@@ -17,34 +17,53 @@ géneros, ratings y popularidad.
 /**
  * anime(X:string) es determinado
  *
- * Animé acierta si X es un animé
+ * anime/1 acierta si X es un animé
  */
-
 anime(X) :- member(
-        X, 
-        [
-            "Dragon Ball",
-            "Naruto",
-            "Bleach",
-            "HunterXHunter",
-            "Hamtaro",
-            "Full Metal Alchemist",
-            "Suzumiya Haruhi no Yuutsu",
-            "Sword Art Online",
-            "Another",
-            "Death Note",
-            "Attack on Titan",
-            "Steins;Gate",
-            "Pokémon",
-            "InuYasha",
-            "Kuroshitsuji",
-            "Yu-Gi-Oh!",
-            "Digimon"
-        ]
-    ).
+    X, 
+    [
+        "Dragon Ball",
+        "Naruto",
+        "Bleach",
+        "HunterXHunter",
+        "Hamtaro",
+        "Full Metal Alchemist",
+        "Suzumiya Haruhi no Yuutsu",
+        "Sword Art Online",
+        "Another",
+        "Death Note",
+        "Attack on Titan",
+        "Steins;Gate",
+        "Pokémon",
+        "InuYasha",
+        "Kuroshitsuji",
+        "Yu-Gi-Oh!",
+        "Digimon"
+    ]
+).
     
-    genero(X) :- member(X,["Aventura", "Shoujo", "Shounen", "Kodomo", "Seinen", "Josei", "Ficción",
-                        "Fantasía", "Mecha", "Sobrenatural", "Magia", "Gore"]).
+/**
+ * genero(X:string) es determinado
+ *
+ * Genero acierta si X es un género de animé
+ */
+genero(X) :- member(
+    X,
+    [
+        "Aventura",
+        "Shoujo",
+        "Shounen",
+        "Kodomo",
+        "Seinen",
+        "Josei",
+        "Ficción",
+        "Fantasía",
+        "Mecha",
+        "Sobrenatural",
+        "Magia",
+        "Gore"
+    ]
+).
     
     generoAnime("Naruto",["Shounen","Aventura"]).
     generoAnime("Dragon Ball",["Shounen"]).
