@@ -67,12 +67,12 @@ genero(X) :- member(
 ).
 
 /**
- * rating(X:string, Y:[string])
+ * generoAnime(X:string, Y:[string])
  *
- * rating/2 acierta si Y es la lista de géneros de un anime;
- *          si no se pasa, Y se unifica con la lista de géneros del animé X;
- *          si no se pasa, X se unifica con algún animé cuya 
- *          lista de géneros sea Y.
+ * generoAnime/2 acierta si Y es la lista de géneros de un anime;
+ *               si no se pasa, Y se unifica con la lista de géneros del animé X;
+ *               si no se pasa, X se unifica con algún animé cuya 
+ *               lista de géneros sea Y.
  */
 generoAnime("Naruto", ["Shounen","Aventura"]).
 generoAnime("Dragon Ball", ["Shounen"]).
