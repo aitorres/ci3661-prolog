@@ -38,7 +38,8 @@ anime(X) :- member(
         "InuYasha",
         "Kuroshitsuji",
         "Yu-Gi-Oh!",
-        "Digimon"
+        "Digimon",
+        "Eureka Seven"
     ]
 ).
     
@@ -64,14 +65,34 @@ genero(X) :- member(
         "Gore"
     ]
 ).
-    
-    generoAnime("Naruto",["Shounen","Aventura"]).
-    generoAnime("Dragon Ball",["Shounen"]).
-    generoAnime("Bleach",["Shounen", "Sobrenatural"]).
-    generoAnime("HunterXHunter",["Seinen", "Aventura"]).
-    generoAnime("Hamtaro",["Kodomo"]).
-    generoAnime("Full Metal Alchemist",["Shounen", "Magia"]).
-    
+
+/**
+ * rating(X:string, Y:[string])
+ *
+ * rating/2 acierta si Y es la lista de géneros de un anime;
+ *          si no se pasa, Y se unifica con la lista de géneros del animé X;
+ *          si no se pasa, X se unifica con algún animé cuya 
+ *          lista de géneros sea Y.
+ */
+generoAnime("Naruto", ["Shounen","Aventura"]).
+generoAnime("Dragon Ball", ["Shounen"]).
+generoAnime("Bleach", ["Shounen", "Sobrenatural"]).
+generoAnime("HunterXHunter", ["Seinen", "Aventura"]).
+generoAnime("Hamtaro", ["Kodomo"]).
+generoAnime("Full Metal Alchemist", ["Shounen", "Magia"]).
+generoAnime("Suzumiya Haruhi no Yuutsu", ["Aventura", "Fantasía", "Sobrenatural"]).
+generoAnime("Sword Art Online", ["Aventura", "Ficción", "Fantasía"]).
+generoAnime("Another", ["Aventura", "Sobrenatural", "Gore"]).
+generoAnime("Death Note", ["Aventura", "Sobrenatural", "Ficción"]).
+generoAnime("Attack on Titan", ["Aventura", "Gore"]).
+generoAnime("Steins;Gate", ["Ficción", "Aventura", "Sobrenatural"]).
+generoAnime("Pokémon", ["Fantasía", "Aventura", "Kodomo"]).
+generoAnime("InuYasha", ["Aventura", "Shoujo"]).
+generoAnime("Kuroshitsuji", ["Shoujo"]).
+generoAnime("Yu-Gi-Oh!", ["Magia", "Ficción", "Shounen"]).
+generoAnime("Digimon", ["Fantasía", "Aventura", "Shounen"]).
+generoAnime("Eureka Seven", ["Aventura", "Mecha", "Magia"]).
+
 /**
  * rating(X:string, Y:int)
  *
@@ -97,6 +118,7 @@ rating("InuYasha", 4).
 rating("Kuroshitsuji", 2).
 rating("Yu-Gi-Oh!", 3).
 rating("Digimon", 4).
+rating("Eureka Seven", 3).
 
 /**
  * popularidad(X:string, Y:int)
@@ -123,3 +145,4 @@ popularidad("InuYasha", 8).
 popularidad("Kuroshitsuji", 3).
 popularidad("Yu-Gi-Oh!", 7).
 popularidad("Digimon", 8).
+popularidad("Eureka Seven", 2).
