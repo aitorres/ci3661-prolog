@@ -45,7 +45,7 @@ anime(X) :- member(
 /**
  * genero(X:string) es determinado
  *
- * Genero acierta si X es un género de animé
+ * genero/1 acierta si X es un género de animé
  */
 genero(X) :- member(
     X,
@@ -72,16 +72,35 @@ genero(X) :- member(
     generoAnime("Hamtaro",["Kodomo"]).
     generoAnime("Full Metal Alchemist",["Shounen", "Magia"]).
     
-    rating("Dragon Ball",3).
-    rating("Naruto",1).
-    rating("Bleach",4).
-    rating("HunterXHunter",5).
-    rating("Hamtaro",2).
-    rating("Full Metal Alchemist",4).
-    
-    popularidad("Dragon Ball",7).
-    popularidad("Naruto",5).
-    popularidad("Bleach",8).
-    popularidad("HunterXHunter",3).
-    popularidad("Hamtaro",10).
-    popularidad("Full Metal Alchemist",1).
+/**
+ * rating(X:string, Y:int)
+ *
+ * rating/2 acierta si Y es la puntuación entre 1 y 5 del animé X;
+ *          si no se pasa, Y se unifica con la puntuación del animé X;
+ *          si no se pasa, X se unifica con algún animé cuya 
+ *          puntuación sea Y.
+ */
+rating("Dragon Ball", 3).
+rating("Naruto", 1).
+rating("Bleach", 4).
+rating("HunterXHunter", 5).
+rating("Hamtaro", 1).
+rating("Full Metal Alchemist", 4).
+rating("Suzumiya Haruhi no Yuutsu", 3).
+rating("Sword Art Online", 4).
+rating("Another", 4).
+rating("Death Note", 5).
+rating("Attack on Titan", 5).
+rating("Steins;Gate", 2).
+rating("Pokémon", 4).
+rating("InuYasha", 4).
+rating("Kuroshitsuji", 2).
+rating("Yu-Gi-Oh!", 3).
+rating("Digimon", 4).
+
+    popularidad("Dragon Ball", 7).
+    popularidad("Naruto", 5).
+    popularidad("Bleach", 8).
+    popularidad("HunterXHunter", 3).
+    popularidad("Hamtaro", 10).
+    popularidad("Full Metal Alchemist", 1).
