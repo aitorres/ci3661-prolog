@@ -528,25 +528,29 @@ tema_conversacional("agradecimiento").
 tema_conversacional("desconocido").
 
 /**
- * existe_anime_con_num_popularidad/1
- *
- * existe_anime_con_num_popularidad(N), si recibe un número N, determina si existe algún animé
- * con ese número de popularidad
- *
- * existe_anime_con_num_popularidad(L), si recibe una lista de números L, determina si existe algún
- * animé cuya popularidad sea alguno de los números en L.
- */
-existe_anime_con_num_popularidad([]) :- fail.
-existe_anime_con_num_popularidad(X) :- anime_segun_popularidad(X, L), length(L, Tam), Tam > 0.
-existe_anime_con_num_popularidad([X | Xs]) :- existe_anime_con_num_popularidad(X); existe_anime_con_num_popularidad(Xs).
-
-/**
  * existe_anime_con_num_rating/1
  *
  * existe_anime_con_num_rating(N) determina si existe algún animé cuya popularidad corresponda
  * al número de N estrellas
  */
 existe_anime_con_num_rating(X) :- anime_segun_rating(X, L), length(L, Tam), Tam > 0.
+
+/**
+ * existe_anime_con_num_popularidad/1
+ * 
+ * existe_anime_con_num_popularidad(N), si recibe un número N, determina si existe algún animé
+ * con ese número de popularidad
+ */
+existe_anime_con_num_popularidad(X) :- anime_segun_popularidad(X, L), length(L, Tam), Tam > 0.
+
+/**
+ * existe_anime_con_lista_popularidad/1
+ *
+ * existe_anime_con_lista_popularidad(L), si recibe una lista de números L, determina si existe algún
+ * animé cuya popularidad sea alguno de los números en L.
+ */
+existe_anime_con_lista_popularidad([]) :- fail.
+existe_anime_con_lista_popularidad([X | Xs]) :- existe_anime_con_num_popularidad(X); existe_anime_con_lista_popularidad(Xs).
 
 /**
  * parsear_popularidad/2
@@ -633,7 +637,7 @@ listar_por_popularidad_desde_mensaje(M):-
 	parsear_popularidad(M, L),
 	(
 		(
-			existe_anime_con_num_popularidad(L), !,
+			existe_anime_con_lista_popularidad(L), !,
 			imprimir("Yuki:- Ah, sí. Déjame ver qué se me ocurre."),
 			imprimir_anime_por_popularidad(L),
 			imprimir("Yuki:- Eso es todo, humano.")
