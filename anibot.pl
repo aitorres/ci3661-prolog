@@ -194,7 +194,14 @@ es_mensaje(
         "Yuki:- *se asoma, tímidamente* Hola...",
         "Yuki:- ¡HOLA! HABLEMOS.",
         "Yuki:- ¿H-hola? ¿Está-á-ás a-a-ahí?",
-        "Yuki:- Un gusto, humano. Soy una interfaz automatizada para conocer series de animé."
+		"Yuki:- Un gusto, humano. Soy una interfaz automatizada para conocer series de animé.",
+		"Yuki:- ¡Hola, hola, hola, hola! ¡Ya llegué! ¡Traje animé!",
+		"Yuki:- *sonidos de modem telefónico de CANTV conectándose* Hola.",
+		"Yuki:- Beep-boop, aquí estoy. Hola.",
+		"Yuki:- ¿Aló? Sí, ¿diga?",
+		"Yuki:- He sido invocada.",
+		"Yuki:- Hola, alguien osó despertarme. ¿Qué tal?",
+		"*Has iniciado sesión en la sala de chat. 1 usuario en línea."
     ]
 ).
 
@@ -207,7 +214,13 @@ es_mensaje(
 		"Yuki:- Oh, humano, me llaman en otra interfaz. Debo irme.",
 		"Yuki:- Hasta luego, humano. Gracias por todo.",
 		"Yuki:- Debería irme. Dejé la tetera encendida.",
-		"Yuki:- Adieu!~"
+		"Yuki:- Adieu!~",
+		"Yuki:- Me largo. No puedo más.",
+		"Yuki:- No soporto hablar tanto con humanos, adiós.",
+		"Yuki:- Te tengo que dejar, mi prima *Emilia está en una emergencia y necesita ayuda. ¡Adiós!",
+		"Yuki:- I'll be back!~",
+		"Yuki ha cerrado sesión.",
+		"Has sido expulsado de la sala de chat"
 	]
 ).
 
@@ -420,7 +433,7 @@ es_despedida(M):-
 		es_palabra_de("adios", M); es_palabra_de("Adios", M);
 		es_palabra_de("adiós", M); es_palabra_de("Adiós", M);
 		es_palabra_de("chao", M); es_palabra_de("Chao", M);
-		es_palabra_de("hasta luego", M); es_palabra_de("Hasta luego", M);
+		((es_palabra_de("hasta", M); es_palabra_de("Hasta", M)), es_palabra_de("luego", M));
 		es_palabra_de("quit", M); es_palabra_de("Quit", M)
 	).
   
@@ -499,6 +512,19 @@ es_agradecimiento(M):-
 		es_palabra_de("gracias", M); es_palabra_de("Gracias", M)
 	).
 
+/**
+ * es_saludo/1
+ *
+ * es_saludo(M) acierta si la string M contiene alguna palabra
+ * clave que identifique que está saludando al bot
+ */
+es_saludo(M):-
+	(
+		es_palabra_de("hola", M); es_palabra_de("Hola", M);
+		es_palabra_de("saludos", M); es_palabra_de("Saludos", M);
+		((es_palabra_de("qué", M); es_palabra_de("Qué", M)), es_palabra_de("tal", M));
+		((es_palabra_de("que", M); es_palabra_de("Que", M)), es_palabra_de("tal", M))
+	).
 
 /**
  * obtener_tema/1
@@ -512,6 +538,7 @@ obtener_tema(M, "agradecimiento"):- es_agradecimiento(M), !.
 obtener_tema(M, "clima"):- es_clima(M), !.
 obtener_tema(M, "hoteles"):- es_hoteles(M), !.
 obtener_tema(M, "identidad"):- es_identidad(M), !.
+obtener_tema(M, "bienvenida"):- es_saludo(M), !.
 obtener_tema(_, "desconocido").
 
 /**
@@ -521,6 +548,7 @@ obtener_tema(_, "desconocido").
  * un tema conversacional (genera una respuesta aleatoria no personalizada).
  */
 tema_conversacional("despedida").
+tema_conversacional("bienvenida").
 tema_conversacional("clima").
 tema_conversacional("hoteles").
 tema_conversacional("identidad").
