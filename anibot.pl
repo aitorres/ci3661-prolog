@@ -160,6 +160,8 @@ popularidad("Eureka Seven", 2).
  * animé cuyo rating es R.
  */
 anime_segun_rating(R, L):-
+	R >= 1,
+	5 >= R,
 	findall(X, rating(X, R), L).
 
 /**
@@ -169,6 +171,8 @@ anime_segun_rating(R, L):-
  * animé cuya popularidad es P.
  */
 anime_segun_popularidad(P, L):-
+	P >= 1,
+	10 >= P,
 	findall(X, popularidad(X, P), L).
 
 % ==========================================================================
