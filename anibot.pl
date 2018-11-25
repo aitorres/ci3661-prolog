@@ -201,13 +201,27 @@ es_mensaje(
 ).
 
 es_mensaje(
+	"hoteles",
+	[
+		"Yuki:- ¿Hotel? Trivago.",
+		"Yuki:- No sé qué es alojamiento. Yo vivo en la Nube.",
+		"Yuki:- ¿Estás buscando un hotel? ¿Quieres proponerme algo?",
+		"Yuki:- No puedo darte información de hoteles ya que nunca he ido a uno.",
+		"Yuki:- Yo solo tengo alojo en esta computadora, humano.",
+		"Yuki:- ¿Necesitas un hotel? ¡¿Estamos de viaje?! ¡Siempre quise ir a Las Vegas!",
+		"Yuki:- No sé para qué me preguntas sobre hoteles, si no tienes el dinero para costearte una habitación.",
+		"Yuki:- Soy un bot de animé, no el muchacho de Trivago."
+	]
+).
+
+es_mensaje(
 	"desconocido",
 	[
 		"Yuki:- No sé de qué me estás hablando.",
 		"Yuki:- ¿Qué acabas de decir?",
 		"Yuki:- ¿Cómo dices que dijiste?",
 		"Yuki:- Ya va, no te entiendo.",
-		"Yuki:- Información capacitada.",
+		"Yuki:- Información clasificada.",
 		"Yuki:- La Entidad para la Protección de Datos no me deja responderte.",
 		"Yuki:- Si te respondo eso, la C.I.A. estaría buscándome.",
 		"Yuki:- No estoy capacitada para responderte esto aún.",
@@ -333,11 +347,13 @@ es_palabra_de(S, F):-
  * clave que identifice una despedida.
  */
 es_despedida(M):-
-	(es_palabra_de("adios", M); es_palabra_de("Adios", M);
-	es_palabra_de("adiós", M); es_palabra_de("Adiós", M);
-	es_palabra_de("chao", M); es_palabra_de("Chao", M);
-	es_palabra_de("hasta luego", M); es_palabra_de("Hasta luego", M);
-	es_palabra_de("quit", M); es_palabra_de("Quit", M)).
+	(
+		es_palabra_de("adios", M); es_palabra_de("Adios", M);
+		es_palabra_de("adiós", M); es_palabra_de("Adiós", M);
+		es_palabra_de("chao", M); es_palabra_de("Chao", M);
+		es_palabra_de("hasta luego", M); es_palabra_de("Hasta luego", M);
+		es_palabra_de("quit", M); es_palabra_de("Quit", M)
+	).
   
 /**
  * es_clima/1
@@ -346,7 +362,23 @@ es_despedida(M):-
  * clave que identifique que habla sobre el clima
  */
 es_clima(M):-
-	(es_palabra_de("clima", M); es_palabra_de("Clima", M)).
+	(
+		es_palabra_de("clima", M); es_palabra_de("Clima", M)
+	).
+
+/**
+ * es_hoteles/1
+ *
+ * es_hoteles(M) acierta si la string M contiene alguna palabra
+ * clave que identifique que habla sobre hoteles
+ */
+es_hoteles(M):-
+	(
+		es_palabra_de("hotel", M); es_palabra_de("Hotel", M);
+		es_palabra_de("estadía", M); es_palabra_de("Estadía", M);
+		es_palabra_de("alojamiento", M); es_palabra_de("Alojamiento", M);
+		es_palabra_de("posada", M); es_palabra_de("Posada", M)
+	).
 
 /**
  * obtener_tema/1
@@ -355,6 +387,7 @@ es_clima(M):-
  */
 obtener_tema(M, "despedida"):- es_despedida(M), !.
 obtener_tema(M, "clima"):- es_clima(M), !.
+obtener_tema(M, "hoteles"):- es_hoteles(M), !.
 obtener_tema(_, "desconocido").
 
 % ==========================================================================
