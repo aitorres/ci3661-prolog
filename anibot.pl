@@ -326,10 +326,7 @@ es_mensaje(
  *
  * Función auxiliar para utilizar listas como arreglos usuales.
  */
-acceder([X | _], 1, X).
-acceder([_| Xs], Indice, M):-
-    Nuevo_Indice is Indice-1,
-    acceder(Xs, Nuevo_Indice, M).
+acceder(L, I, X):- R is I-1, nth0(R, L, X).
 
 /**
  * obtener_mensaje_aleatorio/2
