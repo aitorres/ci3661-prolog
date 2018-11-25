@@ -9,7 +9,28 @@ Proyecto de programación lógica en Prolog para la asignatura Laboratorio de Le
 @TODO: Colocar link
 
 ## Modo de uso
-@TODO: Explicar
+El bot puede utilizarse dentro de un intérprete del dialecto SWI-Prolog en cualquier sistema operativo compatible. Para esto, primero se debe ejecutar el intérprete de prolog en la misma carpeta del proyecto. En Linux, esto podría realizarse así:
+```bash
+swipl
+```
+
+Posteriormente, dentro del intérprete de prolog, cargar el archivo:
+```swipl
+[anibot].
+```
+
+Al realizar la carga satisfactoriamente (se lee **true** en la pantalla), basta con llamar al predicado `chat/0` para interactuar con el bot.
+
+```swipl
+chat.
+```
+
+Para terminar la ejecución, usted debe despedirse del bot. Por ejemplo, decir algo como:
+```swipl
+Yo:- Adiós, bot.
+```
+
+Sea educado con el bot ;-)
 
 ## Detalles de Implementación
 
