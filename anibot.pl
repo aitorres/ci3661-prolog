@@ -160,8 +160,6 @@ popularidad("Eureka Seven", 2).
  * animé cuyo rating es R.
  */
 anime_segun_rating(R, L):-
-	1 <= R,
-	R <= 5,
 	findall(X, rating(X, R), L).
 
 /**
@@ -171,8 +169,6 @@ anime_segun_rating(R, L):-
  * animé cuya popularidad es P.
  */
 anime_segun_popularidad(P, L):-
-	1 <= P,
-	P <= 10,
 	findall(X, popularidad(X, P), L).
 
 % ==========================================================================
@@ -276,6 +272,28 @@ es_mensaje(
 		"Yuki:- Creo que no estamos hablando el mismo idioma.",
 		"Yuki:- ¿Aló? ¿Policía? Este humano me está diciendo cosas raras.",
 		"Yuki:- Necesitaré refuerzos bot para responderte."
+	]
+).
+
+es_mensaje(
+	"agradecimiento",
+	[
+		"Yuki:- De nada, humano.",
+		"Yuki:- Hago lo que puedo.",
+		"Yuki:- ¡A-a-ahh!~ D-de n-n-nada...",
+		"Yuki:- Agradecimiento aceptado.",
+		"Yuki:- Si sigues así, podríamos salir en una cita. Digo, de nada."
+	]
+).
+
+es_mensaje(
+	"inicio_sugerencia_animé",
+	[
+		"Yuki:- Podrías ver el animé ",
+		"Yuki:- Creo que te gustaría ver ",
+		"Yuki:- Te recomiendo ver ",
+		"Yuki:- Te puedo sugerir el animé ",
+		"Yuki:- En mi opinión, podrías ver "
 	]
 ).
 
@@ -443,6 +461,29 @@ es_identidad(M):-
 	).
 
 /**
+ * es_popularidad/1
+ *
+ * es_popularidad(M) acierta si la string M contiene alguna palabra
+ * clave que identifique que habla sobre popularidad de animé
+ */
+es_popularidad(M):-
+	(
+		es_palabra_de("conocido", M); es_palabra_de("Conocido", M)
+	).
+
+/**
+ * es_agradecimiento/1
+ *
+ * es_agradecimiento(M) acierta si la string M contiene alguna palabra
+ * clave que identifique que habla sobre agradecimiento por su labor
+ */
+es_agradecimiento(M):-
+	(
+		es_palabra_de("gracias", M); es_palabra_de("Gracias", M)
+	).
+
+
+/**
  * obtener_tema/1
  *
  * Obtener_tema determina el tema de una frase M según su contenido.
@@ -451,7 +492,105 @@ obtener_tema(M, "despedida"):- es_despedida(M), !.
 obtener_tema(M, "clima"):- es_clima(M), !.
 obtener_tema(M, "hoteles"):- es_hoteles(M), !.
 obtener_tema(M, "identidad"):- es_identidad(M), !.
+obtener_tema(M, "popularidad"):- es_popularidad(M), !.
+obtener_tema(M, "agradecimiento"):- es_agradecimiento(M), !.
 obtener_tema(_, "desconocido").
+
+/**
+ * tema_conversacional/1
+ *
+ * tema_conversacional(M) acierta si el tema M es conocido y considerado
+ * un tema conversacional (genera una respuesta aleatoria no personalizada).
+ */
+tema_conversacional("despedida").
+tema_conversacional("clima").
+tema_conversacional("hoteles").
+tema_conversacional("identidad").
+tema_conversacional("agradecimiento").
+tema_conversacional("desconocido").
+
+/**
+ * existe_anime_con_num_popularidad/1
+ *
+ * existe_anime_con_num_popularidad(N), si recibe un número N, determina si existe algún animé
+ * con ese número de popularidad
+ *
+ * existe_anime_con_num_popularidad(L), si recibe una lista de números L, determina si existe algún
+ * animé cuya popularidad sea alguno de los números en L.
+ */
+existe_anime_con_num_popularidad([]) :- fail.
+existe_anime_con_num_popularidad(X) :- anime_segun_popularidad(X, L), length(L, Tam), Tam > 0.
+existe_anime_con_num_popularidad([X | Xs]) :- existe_anime_con_num_popularidad(X); existe_anime_con_num_popularidad(Xs).
+
+/**
+ * parsear_popularidad/2
+ *
+ * parsear_poopularidad(M, P) determina qué palabras clave en la frase M corresponden a 
+ * qué tipo de valores de popularidad, entre 1 y 10, y unifica P con la lista de estos
+ * valores de acuerdo a lo establecido en el enunciado.
+ *
+ * NOTA DE IMPLEMENTACIÓN: No se busca la palabra "conocido" puesto que la llamada a este
+ * predicado se hace siempre habiendo previamente determinado que la palabra está en la frase,
+ * así reducimos la cantidad de búsquedas en string.
+ */
+parsear_popularidad(M, P):- es_palabra_de("muy", M), es_palabra_de("poco", M), !, P = [1, 2].
+parsear_popularidad(M, P):- es_palabra_de("muy", M), !, P = [8, 9].
+parsear_popularidad(M, P):- es_palabra_de("poco", M), !, P = [3, 4, 5].
+parsear_popularidad(M, P):- es_palabra_de("bastante", M), !, P = [10].
+parsear_popularidad(_, P):- !, P = [6, 7].
+
+/**
+ * imprimir_sugerencias_de_anime/1
+ *
+ * imprimir_sugerencias_de_anime(L) recibe una lista de nombres de animé e imprime frases
+ * que corresponden a sugerencias con los datos de estos animé.
+ */
+imprimir_sugerencias_de_anime([]).
+imprimir_sugerencias_de_anime([X|Xs]):-
+	rating(X, R),
+	popularidad(X, P),
+	obtener_mensaje_aleatorio("inicio_sugerencia_animé", S0),
+	string_concat(S0, X, S1),
+	string_concat(S1, " que tiene un rating de ", S2),
+	string_concat(S2, R, S3),
+	string_concat(S3, " estrellas y una popularidad de ", S4),
+	string_concat(S4, P, S5),
+	string_concat(S5, " sobre 10.", S),
+	imprimir(S),
+	imprimir_sugerencias_de_anime(Xs).
+
+/**
+ * imprimir_anime_por_popularidad/1
+ *
+ * imprimir_anime_por_popularidad(L) recibe una lista de enteros correspondientes a valores
+ * de popularidad e imprime secuencialmente recomendaciones de animé con esos valores,
+ * incluyendo todos sus datos.
+ */
+imprimir_anime_por_popularidad([]).
+imprimir_anime_por_popularidad([X|Xs]):-
+	anime_segun_popularidad(X, L),
+	imprimir_sugerencias_de_anime(L),
+	imprimir_anime_por_popularidad(Xs).
+
+/**
+ * listar_por_popularidad_desde_mensaje/1
+ *
+ * listar_por_popularidad_desde_mensaje(M) recibe un string (frase) en M e imprime
+ * todos los animé cuya popularidad corresponda a lo solicitado en la frase M,
+ * o un mensaje adecuado si no existe ninguno en la base de datos.
+ */
+listar_por_popularidad_desde_mensaje(M):-
+	parsear_popularidad(M, L),
+	(
+		(
+			existe_anime_con_num_popularidad(L), !,
+			imprimir("Yuki:- Ah, sí. Déjame ver qué se me ocurre."),
+			imprimir_anime_por_popularidad(L),
+			imprimir("Yuki:- Eso es todo, humano.")
+		);
+		imprimir("Yuki:- Aún no conozco tantos animé como para darte una respuesta. ¿Me ayudas con eso?")
+	),
+	fail.
 
 % ==========================================================================
 % Funciones auxiliares de conversación del bot
@@ -477,9 +616,12 @@ dar_bienvenida:-
  */
 responder(M):-
     obtener_tema(M, T), !,
-    obtener_mensaje_aleatorio(T, D),
-    imprimir(D),
     (
+    	(tema_conversacional(T), obtener_mensaje_aleatorio(T, D), imprimir(D));
+    	(not(tema_conversacional(T)))
+    ),
+    (
+    	(T == "popularidad", listar_por_popularidad_desde_mensaje(M));
     	(T == "despedida", halt);
     	(T == "desconocido", 
     	 string_concat("Yuki:- No entendí esto: ", M, Mf),
