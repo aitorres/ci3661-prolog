@@ -185,6 +185,21 @@ es_mensaje(
 	]
 ).
 
+es_mensaje(
+	"clima",
+	[
+		"Yuki:- El clima es una construcción social. No entiendo de eso.",
+		"Yuki:- Hablando del clima, mi nombre significa 'nieve'. Kawaii!~",
+		"Yuki:- Gomenasai, no comprendo el concepto humano de clima.",
+		"Yuki:- Ah, sí, el clima está muy bonito acá, muchos bytes y pocos bits.",
+		"Yuki:- Está un poco caluroso acá, ¿no crees?",
+		"Yuki:- No entiendo de clima, pero hay otro bot amigo mío que sí. Creo que se llama @USBClima en Twitter.",
+		"Yuki:- ¿Por qué me habla sobre el clima si sabes que no sé de eso?",
+		"Yuki:- El 'clima' no es un tema de animé. A veces, pienso que no eres muy inteligente...",
+		"Yuki:- ¿Clima? ¿Qué es eso?"
+	]
+).
+
 % ==========================================================================
 % Funciones auxiliares del bot
 % ==========================================================================
@@ -290,6 +305,32 @@ es_palabra_de(S, F):-
 	member(S, L).
 
 % ==========================================================================
+% Parseo de temas de entrada
+% ==========================================================================
+
+/**
+ * es_despedida/1
+ *
+ * es_despedida(M) acierta si la string M contiene alguna palabra
+ * clave que identifice una despedida.
+ */
+es_despedida(M):-
+	(es_palabra_de("adios", M); es_palabra_de("Adios", M);
+	es_palabra_de("adiós", M); es_palabra_de("Adiós", M);
+	es_palabra_de("chao", M); es_palabra_de("Chao", M);
+	es_palabra_de("hasta luego", M); es_palabra_de("Hasta luego", M);
+	es_palabra_de("quit", M); es_palabra_de("Quit", M)).
+  
+/**
+ * es_clima/1
+ *
+ * es_clima(M) acierta si la string M contiene alguna palabra
+ * clave que identifique que habla sobre el clima
+ */
+es_clima(M):-
+	(es_palabra_de("clima", M); es_palabra_de("Clima", M)).
+
+% ==========================================================================
 % Funciones auxiliares de conversación del bot
 % ==========================================================================
 
@@ -304,19 +345,6 @@ dar_bienvenida:-
     imprimir(M).
 
 /**
- * es_despedida/1
- *
- * es_despedida(M) acierta si la string M contiene alguna palabra
- * clave que identifice una despedida.
- */
-es_despedida(M):-
-	es_palabra_de("adios", M); es_palabra_de("Adios", M);
-	es_palabra_de("adiós", M); es_palabra_de("Adiós", M);
-	es_palabra_de("chao", M); es_palabra_de("Chao", M);
-	es_palabra_de("hasta luego", M); es_palabra_de("Hasta luego", M);
-	es_palabra_de("quit", M); es_palabra_de("Quit", M).
-    
-/**
  * reponder/1
  *
  * responder(M) determina si M es un mensaje apropiado de salida
@@ -325,10 +353,23 @@ es_despedida(M):-
  * al próximo predicado)
  */
 responder(M):-
-    es_despedida(M),
+    es_despedida(M), !,
     obtener_mensaje_aleatorio("despedida", D),
     imprimir(D),
     halt.
+
+/**
+ * reponder/1
+ *
+ * responder(M) determina si M es un mensaje sobre el clima
+ * del usuario, en cuyo caso imprime un mensaje al respecto
+ * y falla.
+ */
+responder(M):-
+    es_clima(M), !,
+    obtener_mensaje_aleatorio("clima", D),
+    imprimir(D),
+    fail.
 
 /**
  * responder/1
