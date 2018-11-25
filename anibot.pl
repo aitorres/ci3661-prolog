@@ -200,6 +200,59 @@ es_mensaje(
 	]
 ).
 
+es_mensaje(
+	"hoteles",
+	[
+		"Yuki:- ¿Hotel? Trivago.",
+		"Yuki:- No sé qué es alojamiento. Yo vivo en la Nube.",
+		"Yuki:- ¿Estás buscando un hotel? ¿Quieres proponerme algo?",
+		"Yuki:- No puedo darte información de hoteles ya que nunca he ido a uno.",
+		"Yuki:- Yo solo tengo alojo en esta computadora, humano.",
+		"Yuki:- ¿Necesitas un hotel? ¡¿Estamos de viaje?! ¡Siempre quise ir a Las Vegas!",
+		"Yuki:- No sé para qué me preguntas sobre hoteles, si no tienes el dinero para costearte una habitación.",
+		"Yuki:- Soy un bot de animé, no el muchacho de Trivago."
+	]
+).
+
+es_mensaje(
+	"identidad",
+	[
+		"Yuki:- Mi nombre es Nagato Yuki. Soy una interfaz humanoide para consultas de animé.",
+		"Yuki:- No sé bien quién soy. Solo sé lo que puedo hacer: ayudarte con animé.",
+		"Yuki:- Soy Yuki.",
+		"Yuki:- ¿Por qué quieres saber de mí? Eso me da miedo. Aunque en realidad no pueda sentir miedo, ni nada.",
+		"Yuki:- A veces, siento que fui sacada de un animé, o algo así. Pero en realidad soy solo código.",
+		"Yuki:- Si quieres saber más de mí, puedes preguntarle a mis creadores, Gustavo y Andrés.",
+		"Yuki:- ¿Yo? Pues, yo tengo dos papás. Qué progresivo, ¿no crees?",
+		"Yuki:- Googlea mi nombre si quieres saber de mí.",
+		"Yuki:- Oto mo nai sekai ni, maiorita: I was snow~~",
+		"Yuki:- Nanika ga kowarete, nanika ga umareru.",
+		"Yuki:- Una interfaz humanoide para contactar formas de vida humana creada por la Entidad de Integración de los Datos. Esa soy yo.",
+		"Yuki:- En un mundo sin siquiera sonido, yo bajé: y era Nieve.",
+		"Yuki:- No tengo nada que ocultar.\tShinjite...",
+		"Yuki:- Tengo una pariente lejana, *Emilia, aunque vive en ARPANET."
+	]
+).
+
+es_mensaje(
+	"desconocido",
+	[
+		"Yuki:- No sé de qué me estás hablando.",
+		"Yuki:- ¿Qué acabas de decir?",
+		"Yuki:- ¿Cómo dices que dijiste?",
+		"Yuki:- Ya va, no te entiendo.",
+		"Yuki:- Información clasificada.",
+		"Yuki:- La Entidad para la Integración de Datos no me deja responderte.",
+		"Yuki:- Si te respondo eso, la C.I.A. estaría buscándome.",
+		"Yuki:- No estoy capacitada para responderte esto aún.",
+		"Yuki:- ¿Puedes repetir?",
+		"Yuki:- Deberías leer mi manual de uso porque no te entendí.",
+		"Yuki:- Creo que no estamos hablando el mismo idioma.",
+		"Yuki:- ¿Aló? ¿Policía? Este humano me está diciendo cosas raras.",
+		"Yuki:- Necesitaré refuerzos bot para responderte."
+	]
+).
+
 % ==========================================================================
 % Funciones auxiliares del bot
 % ==========================================================================
@@ -291,7 +344,7 @@ imprimir_prompt:-
  * cada palabra hallada en la lista L
  */
 separar_frase(F, L):-
-	split_string(F, " ", " .,", L).
+	split_string(F, " ", " .,?", L).
 
 /**
  * es_palabra_de/2
@@ -315,11 +368,13 @@ es_palabra_de(S, F):-
  * clave que identifice una despedida.
  */
 es_despedida(M):-
-	(es_palabra_de("adios", M); es_palabra_de("Adios", M);
-	es_palabra_de("adiós", M); es_palabra_de("Adiós", M);
-	es_palabra_de("chao", M); es_palabra_de("Chao", M);
-	es_palabra_de("hasta luego", M); es_palabra_de("Hasta luego", M);
-	es_palabra_de("quit", M); es_palabra_de("Quit", M)).
+	(
+		es_palabra_de("adios", M); es_palabra_de("Adios", M);
+		es_palabra_de("adiós", M); es_palabra_de("Adiós", M);
+		es_palabra_de("chao", M); es_palabra_de("Chao", M);
+		es_palabra_de("hasta luego", M); es_palabra_de("Hasta luego", M);
+		es_palabra_de("quit", M); es_palabra_de("Quit", M)
+	).
   
 /**
  * es_clima/1
@@ -328,7 +383,49 @@ es_despedida(M):-
  * clave que identifique que habla sobre el clima
  */
 es_clima(M):-
-	(es_palabra_de("clima", M); es_palabra_de("Clima", M)).
+	(
+		es_palabra_de("clima", M); es_palabra_de("Clima", M)
+	).
+
+/**
+ * es_hoteles/1
+ *
+ * es_hoteles(M) acierta si la string M contiene alguna palabra
+ * clave que identifique que habla sobre hoteles
+ */
+es_hoteles(M):-
+	(
+		es_palabra_de("hotel", M); es_palabra_de("Hotel", M);
+		es_palabra_de("estadía", M); es_palabra_de("Estadía", M);
+		es_palabra_de("alojamiento", M); es_palabra_de("Alojamiento", M);
+		es_palabra_de("posada", M); es_palabra_de("Posada", M)
+	).
+
+/**
+ * es_identidad/1
+ *
+ * es_identidad(M) acierta si la string M contiene alguna palabra
+ * clave que identifique que habla sobre identidad del bot
+ */
+es_identidad(M):-
+	(
+		es_palabra_de("identidad", M); es_palabra_de("Identidad", M);
+		es_palabra_de("eres", M); es_palabra_de("Eres", M);
+		es_palabra_de("tú", M); es_palabra_de("Tú", M);
+		es_palabra_de("conocerte", M); es_palabra_de("Conocerte", M);
+		es_palabra_de("ti", M); es_palabra_de("Ti", M)
+	).
+
+/**
+ * obtener_tema/1
+ *
+ * Obtener_tema determina el tema de una frase M según su contenido.
+ */
+obtener_tema(M, "despedida"):- es_despedida(M), !.
+obtener_tema(M, "clima"):- es_clima(M), !.
+obtener_tema(M, "hoteles"):- es_hoteles(M), !.
+obtener_tema(M, "identidad"):- es_identidad(M), !.
+obtener_tema(_, "desconocido").
 
 % ==========================================================================
 % Funciones auxiliares de conversación del bot
@@ -347,46 +444,23 @@ dar_bienvenida:-
 /**
  * reponder/1
  *
- * responder(M) determina si M es un mensaje apropiado de salida
- * del usuario, en cuyo caso imprime un mensaje de despedida
- * y finaliza la ejecución; en caso contrario, falla (para saltar
- * al próximo predicado)
+ * responder(M) determina si M es un mensaje apropiado de un
+ * tema conocido por el bot, responde la entrada dada y, en caso de
+ * ser una despedida, termina la ejecución; en cas contrario, falla 
+ * (para saltar al próximo predicado)
  */
 responder(M):-
-    es_despedida(M), !,
-    obtener_mensaje_aleatorio("despedida", D),
+    obtener_tema(M, T), !,
+    obtener_mensaje_aleatorio(T, D),
     imprimir(D),
-    halt.
-
-/**
- * reponder/1
- *
- * responder(M) determina si M es un mensaje sobre el clima
- * del usuario, en cuyo caso imprime un mensaje al respecto
- * y falla.
- */
-responder(M):-
-    es_clima(M), !,
-    obtener_mensaje_aleatorio("clima", D),
-    imprimir(D),
-    fail.
-
-/**
- * responder/1
- *
- * responder(M) interpreta el mensaje M del usuario y genera una
- * respuesta apropiada.
- *
- * @todo: terminar la implementación de este predicado
- */
-responder(M):-
-    % Este predicado debería interpretar M
-    % y generar una respuesta acorde, pero...
-    string_concat("Yuki:- Acabas de decir: ", M, Mf), % debug
-    imprimir(Mf), % debug
-    imprimir("Yuki:- No estoy capacitada para responderte aún."), %debug
-    fail. % esto NO es debug, esta regla siempre debe fallar para backtrackear
-
+    (
+    	(T == "despedida", halt);
+    	(T == "desconocido", 
+    	 string_concat("Yuki:- No entendí esto: ", M, Mf),
+    	 imprimir(Mf),
+    	 fail
+    	)
+    ).
 
 % ==========================================================================
 % Funciones principales del chat
