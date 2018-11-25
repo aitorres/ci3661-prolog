@@ -269,6 +269,26 @@ imprimir_prompt:-
     ),
     flush_output.
 
+/**
+ * separar_frase/2
+ *
+ * separar_frase(F, L) separa una string F por espacios o puntos y unifica
+ * cada palabra hallada en la lista L
+ */
+separar_frase(F, L):-
+	split_string(F, " ", " .,", L).
+
+/**
+ * es_palabra_de/2
+ *
+ * es_palabra_de(S, F) acierta si S es una palabra de la frase F, separada
+ * por espacios; si no se pasa S, se unifica con alguna de las posibles
+ * palabras de F.
+ */
+es_palabra_de(S, F):-
+	separar_frase(F, L),
+	member(S, L).
+
 % ==========================================================================
 % Funciones auxiliares de conversación del bot
 % ==========================================================================
@@ -284,6 +304,19 @@ dar_bienvenida:-
     imprimir(M).
 
 /**
+ * es_despedida/1
+ *
+ * es_despedida(M) acierta si la string M contiene alguna palabra
+ * clave que identifice una despedida.
+ */
+es_despedida(M):-
+	es_palabra_de("adios", M); es_palabra_de("Adios", M);
+	es_palabra_de("adiós", M); es_palabra_de("Adiós", M);
+	es_palabra_de("chao", M); es_palabra_de("Chao", M);
+	es_palabra_de("hasta luego", M); es_palabra_de("Hasta luego", M);
+	es_palabra_de("quit", M); es_palabra_de("Quit", M).
+    
+/**
  * reponder/1
  *
  * responder(M) determina si M es un mensaje apropiado de salida
@@ -292,8 +325,7 @@ dar_bienvenida:-
  * al próximo predicado)
  */
 responder(M):-
-    % @todo: Manejar mejor la manera de salir
-    member(M, ["q", "quit", "exit", "salir", "chao"]),
+    es_despedida(M),
     obtener_mensaje_aleatorio("despedida", D),
     imprimir(D),
     halt.
