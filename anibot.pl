@@ -150,6 +150,32 @@ popularidad("Digimon", 8).
 popularidad("Eureka Seven", 2).
 
 % ==========================================================================
+% Funciones auxiliares de animé
+% ==========================================================================
+
+/**
+ * anime_segun_rating/2
+ *
+ * Si R es un entero entre 1 y 5, unifica en L una lista con todos los
+ * animé cuyo rating es R.
+ */
+anime_segun_rating(R, L):-
+	1 <= R,
+	R <= 5,
+	findall(X, rating(X, R), L).
+
+/**
+ * anime_segun_popularidad/2
+ *
+ * Si R es un entero entre 1 y 10, unifica en L una lista con todos los
+ * animé cuya popularidad es P.
+ */
+anime_segun_popularidad(P, L):-
+	1 <= P,
+	P <= 10,
+	findall(X, popularidad(X, P), L).
+
+% ==========================================================================
 % Mensajes del bot
 % ==========================================================================
 
