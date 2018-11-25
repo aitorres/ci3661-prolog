@@ -229,7 +229,8 @@ es_mensaje(
 		"Yuki:- Nanika ga kowarete, nanika ga umareru.",
 		"Yuki:- Una interfaz humanoide para contactar formas de vida humana creada por la Entidad de Integración de los Datos. Esa soy yo.",
 		"Yuki:- En un mundo sin siquiera sonido, yo bajé: y era Nieve.",
-		"Yuki:- No tengo nada que ocultar.\tShinjite..."
+		"Yuki:- No tengo nada que ocultar.\tShinjite...",
+		"Yuki:- Tengo una pariente lejana, *Emilia, aunque vive en ARPANET."
 	]
 ).
 
@@ -247,7 +248,8 @@ es_mensaje(
 		"Yuki:- ¿Puedes repetir?",
 		"Yuki:- Deberías leer mi manual de uso porque no te entendí.",
 		"Yuki:- Creo que no estamos hablando el mismo idioma.",
-		"Yuki:- ¿Aló? ¿Policía? Este humano me está diciendo cosas raras."
+		"Yuki:- ¿Aló? ¿Policía? Este humano me está diciendo cosas raras.",
+		"Yuki:- Necesitaré refuerzos bot para responderte."
 	]
 ).
 
