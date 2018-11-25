@@ -12,9 +12,9 @@ géneros, ratings y popularidad.
 
 :- use_module(library(random)).
 
-% ============================================================
+% ==========================================================================
 % Predicados sobre animé
-% ============================================================
+% ==========================================================================
 
 /**
  * anime(X:string) es determinado
@@ -149,9 +149,9 @@ popularidad("Yu-Gi-Oh!", 7).
 popularidad("Digimon", 8).
 popularidad("Eureka Seven", 2).
 
-% ============================================================
+% ==========================================================================
 % Mensajes del bot
-% ============================================================
+% ==========================================================================
 
 /**
  * chat/2
@@ -172,9 +172,22 @@ es_mensaje(
     ]
 ).
 
-% ============================================================
+es_mensaje(
+	"despedida",
+	[
+		"Yuki:- Hasta luego, humano.",
+		"Yuki:- Ya he aprendido suficiente de ti. Puedes irte.",
+		"Yuki:- C-creo que m-m-me voy...",
+		"Yuki:- Oh, humano, me llaman en otra interfaz. Debo irme.",
+		"Yuki:- Hasta luego, humano. Gracias por todo.",
+		"Yuki:- Debería irme. Dejé la tetera encendida.",
+		"Yuki:- Adieu!~"
+	]
+).
+
+% ==========================================================================
 % Funciones auxiliares del bot
-% ============================================================
+% ==========================================================================
 
 /**
  * acceder/3
@@ -205,9 +218,60 @@ obtener_mensaje_aleatorio(Tipo, Mensaje):-
     random(1, Tope, Indice),
     acceder(Lista, Indice, Mensaje).
 
-% ============================================================
-% Funciones principales de conversación del bot
-% ============================================================
+% ==========================================================================
+% Funciones auxiliares de I/O del bot
+% ==========================================================================
+
+/**
+ * leer/1
+ *
+ * leer(M) realiza la operación de I/O de lectura de la entrada estándar
+ * para obtener un string por el usuario hasta encontrar un salto
+ * de línea, que es unificado con el parámetro M
+ */
+leer(M):-
+    read_string(user_input, "\n", "\r", _, M).
+
+/**
+ * imprimir/1
+ *
+ * imprimir(M) imprime un mensaje en pantalla; seguidamente,
+ * imprime un salto de línea y hace flush_output para asegurar que 
+ * el orden de operaciones de I/O sea el esperado
+ */
+imprimir(M):-
+    write_term(
+        M, 
+        [ 
+            portray(true),
+            numbervars(true),
+            quoted(false)
+        ]
+    ),
+    nl,
+    flush_output.
+
+/**
+ * imprimir_prompt/0
+ *
+ * imprimir_prompt muestra en pantalla una decoración de tipo
+ * prompt para el usuario, ideal para ser utilizado justo antes de 
+ * solicitar input, ya que no imprime un salto de línea
+ */
+imprimir_prompt:-
+    write_term(
+        "Yo:- ", 
+        [ 
+            portray(false),
+            numbervars(true),
+            quoted(false)
+        ]
+    ),
+    flush_output.
+
+% ==========================================================================
+% Funciones auxiliares de conversación del bot
+% ==========================================================================
 
 /**
  * dar_bienvenida/0
@@ -217,7 +281,57 @@ obtener_mensaje_aleatorio(Tipo, Mensaje):-
  */
 dar_bienvenida:-
     obtener_mensaje_aleatorio("bienvenida", M),
-    print(M).
+    imprimir(M).
+
+/**
+ * reponder/1
+ *
+ * responder(M) determina si M es un mensaje apropiado de salida
+ * del usuario, en cuyo caso imprime un mensaje de despedida
+ * y finaliza la ejecución; en caso contrario, falla (para saltar
+ * al próximo predicado)
+ */
+responder(M):-
+    % @todo: Manejar mejor la manera de salir
+    member(M, ["q", "quit", "exit", "salir", "chao"]),
+    obtener_mensaje_aleatorio("despedida", D),
+    imprimir(D),
+    halt.
+
+/**
+ * responder/1
+ *
+ * responder(M) interpreta el mensaje M del usuario y genera una
+ * respuesta apropiada.
+ *
+ * @todo: terminar la implementación de este predicado
+ */
+responder(M):-
+    % Este predicado debería interpretar M
+    % y generar una respuesta acorde, pero...
+    string_concat("Yuki:- Acabas de decir: ", M, Mf), % debug
+    imprimir(Mf), % debug
+    imprimir("Yuki:- No estoy capacitada para responderte aún."), %debug
+    fail. % esto NO es debug, esta regla siempre debe fallar para backtrackear
+
+
+% ==========================================================================
+% Funciones principales del chat
+% ==========================================================================
+
+/**
+ * conversar/0
+ *
+ * conversar repite en un ciclo infinito (por backtracking) una lógica sencilla
+ * de conversación bilateral: se lee un mensaje del usuario y se responde por 
+ * parte del bot.
+ */
+conversar:-
+    repeat,
+    imprimir_prompt, % mostramos un prompt decorativo
+    leer(M), % leemos la entrada del usuario
+    responder(M). % ejecutamos una acción de acuerdo a lo solicitado
+    % NOTA: reponder/1 termina la ejecución, o falla y asegura el backtracking
 
 /**
  * chat/0
@@ -226,4 +340,5 @@ dar_bienvenida:-
  * el ciclo de la conversación con el bot
  */
 chat:-
-    dar_bienvenida.
+    dar_bienvenida,
+    conversar.
