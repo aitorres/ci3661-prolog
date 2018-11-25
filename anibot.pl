@@ -200,6 +200,24 @@ es_mensaje(
 	]
 ).
 
+es_mensaje(
+	"desconocido",
+	[
+		"Yuki:- No sé de qué me estás hablando.",
+		"Yuki:- ¿Qué acabas de decir?",
+		"Yuki:- ¿Cómo dices que dijiste?",
+		"Yuki:- Ya va, no te entiendo.",
+		"Yuki:- Información capacitada.",
+		"Yuki:- La Entidad para la Protección de Datos no me deja responderte.",
+		"Yuki:- Si te respondo eso, la C.I.A. estaría buscándome.",
+		"Yuki:- No estoy capacitada para responderte esto aún.",
+		"Yuki:- ¿Puedes repetir?",
+		"Yuki:- Deberías leer mi manual de uso porque no te entendí.",
+		"Yuki:- Creo que no estamos hablando el mismo idioma.",
+		"Yuki:- ¿Aló? ¿Policía? Este humano me está diciendo cosas raras."
+	]
+).
+
 % ==========================================================================
 % Funciones auxiliares del bot
 % ==========================================================================
@@ -330,6 +348,15 @@ es_despedida(M):-
 es_clima(M):-
 	(es_palabra_de("clima", M); es_palabra_de("Clima", M)).
 
+/**
+ * obtener_tema/1
+ *
+ * Obtener_tema determina el tema de una frase M según su contenido.
+ */
+obtener_tema(M, "despedida"):- es_despedida(M), !.
+obtener_tema(M, "clima"):- es_clima(M), !.
+obtener_tema(_, "desconocido").
+
 % ==========================================================================
 % Funciones auxiliares de conversación del bot
 % ==========================================================================
@@ -347,46 +374,23 @@ dar_bienvenida:-
 /**
  * reponder/1
  *
- * responder(M) determina si M es un mensaje apropiado de salida
- * del usuario, en cuyo caso imprime un mensaje de despedida
- * y finaliza la ejecución; en caso contrario, falla (para saltar
- * al próximo predicado)
+ * responder(M) determina si M es un mensaje apropiado de un
+ * tema conocido por el bot, responde la entrada dada y, en caso de
+ * ser una despedida, termina la ejecución; en cas contrario, falla 
+ * (para saltar al próximo predicado)
  */
 responder(M):-
-    es_despedida(M), !,
-    obtener_mensaje_aleatorio("despedida", D),
+    obtener_tema(M, T), !,
+    obtener_mensaje_aleatorio(T, D),
     imprimir(D),
-    halt.
-
-/**
- * reponder/1
- *
- * responder(M) determina si M es un mensaje sobre el clima
- * del usuario, en cuyo caso imprime un mensaje al respecto
- * y falla.
- */
-responder(M):-
-    es_clima(M), !,
-    obtener_mensaje_aleatorio("clima", D),
-    imprimir(D),
-    fail.
-
-/**
- * responder/1
- *
- * responder(M) interpreta el mensaje M del usuario y genera una
- * respuesta apropiada.
- *
- * @todo: terminar la implementación de este predicado
- */
-responder(M):-
-    % Este predicado debería interpretar M
-    % y generar una respuesta acorde, pero...
-    string_concat("Yuki:- Acabas de decir: ", M, Mf), % debug
-    imprimir(Mf), % debug
-    imprimir("Yuki:- No estoy capacitada para responderte aún."), %debug
-    fail. % esto NO es debug, esta regla siempre debe fallar para backtrackear
-
+    (
+    	(T == "despedida", halt);
+    	(T == "desconocido", 
+    	 string_concat("Yuki:- No entendí esto: ", M, Mf),
+    	 imprimir(Mf),
+    	 fail
+    	)
+    ).
 
 % ==========================================================================
 % Funciones principales del chat
