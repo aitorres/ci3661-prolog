@@ -6,7 +6,7 @@ Proyecto de programación lógica en Prolog para la asignatura Laboratorio de Le
 2. Andres Torres, 14-11082
 
 ## Enunciado
-@TODO: Colocar link
+[Ver aquí: *ci3661-prolog-enunciado.pdf* en Google Drive](https://drive.google.com/file/d/1FtN-zCX_xXkFdX_0rxv7aP-tX7jtOcmM/view?usp=sharing)
 
 ## Modo de uso
 El bot puede utilizarse dentro de un intérprete del dialecto SWI-Prolog en cualquier sistema operativo compatible. Para esto, primero se debe ejecutar el intérprete de prolog en la misma carpeta del proyecto. En Linux, esto podría realizarse así:
