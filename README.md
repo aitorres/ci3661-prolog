@@ -103,4 +103,8 @@ Además de estar facultado para dar detalles y responder a consultas sobre temas
 @TODO: Describir más
 
 ## Otras observaciones
+
+### Sobre este documento
+La maquetación de este documento fue realizada en *Markdown*, específicamente el dialecto de *Markdown* enriquecido para su uso en *Github*. 
+
 @TODO: Escribir, si hacen falta
