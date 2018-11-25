@@ -215,6 +215,25 @@ es_mensaje(
 ).
 
 es_mensaje(
+	"identidad",
+	[
+		"Yuki:- Mi nombre es Nagato Yuki. Soy una interfaz humanoide para consultas de animé.",
+		"Yuki:- No sé bien quién soy. Solo sé lo que puedo hacer: ayudarte con animé.",
+		"Yuki:- Soy Yuki.",
+		"Yuki:- ¿Por qué quieres saber de mí? Eso me da miedo. Aunque en realidad no pueda sentir miedo, ni nada.",
+		"Yuki:- A veces, siento que fui sacada de un animé, o algo así. Pero en realidad soy solo código.",
+		"Yuki:- Si quieres saber más de mí, puedes preguntarle a mis creadores, Gustavo y Andrés.",
+		"Yuki:- ¿Yo? Pues, yo tengo dos papás. Qué progresivo, ¿no crees?",
+		"Yuki:- Googlea mi nombre si quieres saber de mí.",
+		"Yuki:- Oto mo nai sekai ni, maiorita: I was snow~~",
+		"Yuki:- Nanika ga kowarete, nanika ga umareru.",
+		"Yuki:- Una interfaz humanoide para contactar formas de vida humana creada por la Entidad de Integración de los Datos. Esa soy yo.",
+		"Yuki:- En un mundo sin siquiera sonido, yo bajé: y era Nieve.",
+		"Yuki:- No tengo nada que ocultar.\tShinjite..."
+	]
+).
+
+es_mensaje(
 	"desconocido",
 	[
 		"Yuki:- No sé de qué me estás hablando.",
@@ -222,7 +241,7 @@ es_mensaje(
 		"Yuki:- ¿Cómo dices que dijiste?",
 		"Yuki:- Ya va, no te entiendo.",
 		"Yuki:- Información clasificada.",
-		"Yuki:- La Entidad para la Protección de Datos no me deja responderte.",
+		"Yuki:- La Entidad para la Integración de Datos no me deja responderte.",
 		"Yuki:- Si te respondo eso, la C.I.A. estaría buscándome.",
 		"Yuki:- No estoy capacitada para responderte esto aún.",
 		"Yuki:- ¿Puedes repetir?",
@@ -323,7 +342,7 @@ imprimir_prompt:-
  * cada palabra hallada en la lista L
  */
 separar_frase(F, L):-
-	split_string(F, " ", " .,", L).
+	split_string(F, " ", " .,?", L).
 
 /**
  * es_palabra_de/2
@@ -381,6 +400,21 @@ es_hoteles(M):-
 	).
 
 /**
+ * es_identidad/1
+ *
+ * es_identidad(M) acierta si la string M contiene alguna palabra
+ * clave que identifique que habla sobre identidad del bot
+ */
+es_identidad(M):-
+	(
+		es_palabra_de("identidad", M); es_palabra_de("Identidad", M);
+		es_palabra_de("eres", M); es_palabra_de("Eres", M);
+		es_palabra_de("tú", M); es_palabra_de("Tú", M);
+		es_palabra_de("conocerte", M); es_palabra_de("Conocerte", M);
+		es_palabra_de("ti", M); es_palabra_de("Ti", M)
+	).
+
+/**
  * obtener_tema/1
  *
  * Obtener_tema determina el tema de una frase M según su contenido.
@@ -388,6 +422,7 @@ es_hoteles(M):-
 obtener_tema(M, "despedida"):- es_despedida(M), !.
 obtener_tema(M, "clima"):- es_clima(M), !.
 obtener_tema(M, "hoteles"):- es_hoteles(M), !.
+obtener_tema(M, "identidad"):- es_identidad(M), !.
 obtener_tema(_, "desconocido").
 
 % ==========================================================================
