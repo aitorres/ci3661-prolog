@@ -10,6 +10,8 @@ géneros, ratings y popularidad.
 @license MIT
 */
 
+:- use_module(library(random)).
+
 % ============================================================
 % Predicados sobre animé
 % ============================================================
@@ -146,3 +148,82 @@ popularidad("Kuroshitsuji", 3).
 popularidad("Yu-Gi-Oh!", 7).
 popularidad("Digimon", 8).
 popularidad("Eureka Seven", 2).
+
+% ============================================================
+% Mensajes del bot
+% ============================================================
+
+/**
+ * chat/2
+ * 
+ * es_mensaje(X, Y) acierta si Y es una lista de mensajes de tipo X.
+ *
+ * Uso auxiliar pasando un parámetro tipo, para obtener una lista de
+ * mensajes de dicho tipo.
+ */
+es_mensaje(
+    "bienvenida", 
+    [
+        "Yuki:- Hola, soy Yuki. ¿Quieres hablar?",
+        "Yuki:- *se asoma, tímidamente* Hola...",
+        "Yuki:- ¡HOLA! HABLEMOS.",
+        "Yuki:- ¿H-hola? ¿Está-á-ás a-a-ahí?",
+        "Yuki:- Un gusto, humano. Soy una interfaz automatizada para conocer series de animé."
+    ]
+).
+
+% ============================================================
+% Funciones auxiliares del bot
+% ============================================================
+
+/**
+ * acceder/3
+ * 
+ * acceder(L, I, M) acierta si M es el elemento con índice I (indexado en 1)
+ * en la lista L.
+ *
+ * Función auxiliar para utilizar listas como arreglos usuales.
+ */
+acceder([X | _], 1, X).
+acceder([_| Xs], Indice, M):-
+    Nuevo_Indice is Indice-1,
+    acceder(Xs, Nuevo_Indice, M).
+
+/**
+ * obtener_mensaje_aleatorio/2
+ * 
+ * obtener_mensaje_aleatorio(L, M) unifica en M un mensaje obtenido
+ * aleatoriamene entre los existentes en la lista L. Más generalmente,
+ * unifica en M un elemento obtenido aleatoriamente en la lista L.
+ *
+ * Función auxiliar para obtener mensajes de respuesta de manera dinámica.
+ */
+obtener_mensaje_aleatorio(Tipo, Mensaje):-
+    es_mensaje(Tipo, Lista),
+    length(Lista, Tamano_lista),
+    Tope is Tamano_lista + 1,
+    random(1, Tope, Indice),
+    acceder(Lista, Indice, Mensaje).
+
+% ============================================================
+% Funciones principales de conversación del bot
+% ============================================================
+
+/**
+ * dar_bienvenida/0
+ * 
+ * dar_bienvenida muestra en pantalla un mensaje de bienvenida
+ * escogido aleatoriamente entre los mensajes existentes.
+ */
+dar_bienvenida:-
+    obtener_mensaje_aleatorio("bienvenida", M),
+    print(M).
+
+/**
+ * chat/0
+ * 
+ * chat muestra un mensaje de bienvenida en pantalla e inicia
+ * el ciclo de la conversación con el bot
+ */
+chat:-
+    dar_bienvenida.
