@@ -44,6 +44,9 @@ Se garantiza el reconocimiento de las frases especificadas en este documento **s
 
 **Nota**: A menos que explícitamente se indique alguna restricción, este documento considera *input*, *consulta* y *pregunta* como lo mismo: un mensaje que el usuario introduce en el prompt de la conversación con el bot.
 
+### Aleatoriedad en respuestas
+Algunas de las posibles respuestas del bot se obtienen de manera aleatoria de una base de datos de respuestas de acuerdo al tema, para darle más dinamismo y cierta personalidad. La lista completa de mensajes puede encontrarse en las definiciones de las reglas `es_mensaje` en [anibot.pl](anibot.pl).
+
 ### Consultas por popularidad
 El bot está facultado para responder ante consultas para conocer animés de acuerdo a su popularidad (indicador numérico entre 1 y 10). La manera para realizar estas consultas es mediante preguntas por algún animé que sea:
 - *bastante conocido* (popularidad de 10)
@@ -94,6 +97,7 @@ Además de estar facultado para dar detalles y responder a consultas sobre temas
 - Su identidad
 - Chistes
 - Otros bots
+- Saludos y despedidas
 - Temas desconocidos
 
 @TODO: Describir más
