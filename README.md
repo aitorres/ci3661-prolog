@@ -47,6 +47,21 @@ Se garantiza el reconocimiento de las frases especificadas en este documento **s
 ### Aleatoriedad en respuestas
 Algunas de las posibles respuestas del bot se obtienen de manera aleatoria de una base de datos de respuestas de acuerdo al tema, para darle más dinamismo y cierta personalidad. La lista completa de mensajes puede encontrarse en las definiciones de las reglas `es_mensaje` en [anibot.pl](anibot.pl).
 
+### Consultas por rating alto y popularidad baja
+El bot está facultado para responder ante consultas sobre animés con **rating alto** y **popularidad baja**. A efectos de implementación, y al quedar a libre decisión del programador, se tomó como **valores de rating alto** los de **4 y 5 estrellas** (ambos inclusive), y **valores de popularidad baja** los de **1 a 3 sobre 10** (ambos inclusive).
+
+Para utilizar esta funcionalidad, se puede consultar sobre algún animé *bueno* y *poco conocido*, o *interesante* y *poco conocido*. Por ejemplo (tomado de la ejecución del programa):
+
+```swipl
+?- chat.
+Yuki:- Hola, soy Yuki. ¿Quieres hablar?
+Yo:- Sí. ¿Me recomiendas algún animé interesante pero poco conocido?
+Yuki:- Ah, ¿quieres ver de esas series que son super buenas pero no han sido vistas por tanta gente?
+Yuki:- Te recomiendo ver Full Metal Alchemist que tiene un rating de 4 estrellas y una popularidad de 1 sobre 10.
+Yuki:- Te puedo sugerir el animé HunterXHunter que tiene un rating de 5 estrellas y una popularidad de 3 sobre 10.
+Yuki:- Tengo eso por ahora. ¿Qué opinas? ¡Míralas y cuéntame luego!
+```
+
 ### Consultas por popularidad
 El bot está facultado para responder ante consultas para conocer animés de acuerdo a su popularidad (indicador numérico entre 1 y 10). La manera para realizar estas consultas es mediante preguntas por algún animé que sea:
 - *bastante conocido* (popularidad de 10)
