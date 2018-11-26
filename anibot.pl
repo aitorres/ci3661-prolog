@@ -912,6 +912,16 @@ filtrar_anime_genero(G, L):-
 filtrar_lista_orden(L0, "menor", Lf):- Lf = L0.
 filtrar_lista_orden(L0, _, Lf):- reverse(L0, Lf).
 
+/**
+ * filtrar_lista_clasificacion/3
+ * 
+ * filtrar_lista_clasificacion(L0, C, Lf) toma una lista inicial de animé,
+ * los ordena de mayor a menor según un criterio C y unifica la nueva lista
+ * de orden en Lf.
+ * 
+ * NOTA: Se crea un predicado por cada criterio de filtrado posible. Se asume
+ * por defecto que el criterio es 'rating'.
+ */
 filtrar_lista_clasificacion(L0, "ambos", Lf):-
 	findall(X, and(member(X, L0), anime_segun_ratingPopularidad(15, Lp15), member(X, Lp15)), L15),
 	findall(X, and(member(X, L0), anime_segun_ratingPopularidad(14, Lp14), member(X, Lp14)), L14),
@@ -940,7 +950,6 @@ filtrar_lista_clasificacion(L0, "ambos", Lf):-
 	append(LP10, L13, LP11),
 	append(LP11, L14, LP12),
 	append(LP12, L15, Lf).
-
 filtrar_lista_clasificacion(L0, "popularidad", Lf):-
 	findall(X, and(member(X, L0), anime_segun_popularidad(10, Lp10), member(X, Lp10)), L10),
 	findall(X, and(member(X, L0), anime_segun_popularidad(9, Lp9), member(X, Lp9)), L9),
@@ -961,7 +970,6 @@ filtrar_lista_clasificacion(L0, "popularidad", Lf):-
 	append(LP6, L8, LP7),
 	append(LP7, L9, LP8),
 	append(LP8, L10, Lf).
-
 filtrar_lista_clasificacion(L0, _, Lf):-
 	findall(X, and(member(X, L0), anime_segun_rating(5, Lp5), member(X, Lp5)), L5),
 	findall(X, and(member(X, L0), anime_segun_rating(4, Lp4), member(X, Lp4)), L4),
@@ -973,6 +981,14 @@ filtrar_lista_clasificacion(L0, _, Lf):-
 	append(LP2, L4, LP3),
 	append(LP3, L5, Lf).
 
+/**
+ * consultar_anime_por_orden/1
+ * 
+ * consultar_anime_por_orden(M) interpreta la frase M como una consulta de animé
+ * por géneros, según un criterio de clasificación y con un orden dado (por defecto,
+ * el criterio es 'rating' y el orden de 'mayor' a menor), y muestra las sugerencias
+ * en pantalla.
+ */
 consultar_anime_por_orden(M):-
 	parsear_generos(M, G),
 	parsear_tipo_clasificacion(M, T),
@@ -995,6 +1011,13 @@ consultar_anime_por_orden(M):-
 	),
 	fail.
 
+/**
+ * listar_por_genero/1
+ * 
+ * listar_por_genero(M) interpreta en la frase M uno o varios géneros de animé, halla
+ * los animé que pertenezcan a alguno de estos géneros (de manera inclusiva, basta con que
+ * pertenezca a uno de ellos para ser considerado) y los imprime como sugerencias.
+ */
 listar_por_genero(M):-
 	imprimir("Yuki:- Veamos qué puedo hacer por ti. Si me quieres ayudar, ¡alza tus manos al cielo!"),
 	parsear_generos(M, G), !,
@@ -1013,6 +1036,14 @@ listar_por_genero(M):-
 	),
 	fail.
 
+/**
+ * consultar_anime_por_genero_y_rating/1
+ * 
+ * consultar_anime_por_genero_y_rating(M) interpreta en la frase M uno o varios géneros 
+ * de animé y un valor de estrellas de rating, halla los animé que pertenezcan a alguno de estos géneros 
+ * (de manera inclusiva, basta con pertenezca a uno de ellos para ser considerado) y que, además, cuente
+ * con la cantidad de estrellas dada, y los imprime como sugerencias.
+ */
 consultar_anime_por_genero_y_rating(M):-
 	imprimir("Yuki:- Oh, comprendo. Déjame ver qué puedo responderte, un momento. *sonidos de modem de CANTV*"),
 	parsear_generos(M, G), !,
@@ -1032,7 +1063,6 @@ consultar_anime_por_genero_y_rating(M):-
 		)
 	),
 	fail.
-
 
 % ==========================================================================
 % Funciones auxiliares de conversación del bot
