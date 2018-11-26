@@ -680,7 +680,7 @@ listar_por_popularidad_desde_mensaje(M):-
 	(
 		(
 			existe_anime_con_lista_popularidad(L), !,
-			imprimir("Yuki:- Ah, sí. Déjame ver qué se me ocurre."),
+			imprimir("Yuki:- Ah, sí, la popularidad. Déjame ver qué se me ocurre."),
 			imprimir_anime_por_popularidad(L),
 			imprimir("Yuki:- Eso es todo, humano.")
 		);
@@ -700,7 +700,7 @@ listar_por_rating_desde_mensaje(M):-
 	(
 		(
 			existe_anime_con_num_rating(L), !,
-			imprimir("Yuki:- Creo que te puedo ayudar con eso, déjame pensar."),
+			imprimir("Yuki:- ¿Por su rating? Creo que te puedo ayudar con eso, déjame pensar."),
 			imprimir_anime_por_rating(L),
 			imprimir("Yuki:- No tengo más que decirte. Acepta mis recomendaciones.")
 		);
@@ -708,6 +708,13 @@ listar_por_rating_desde_mensaje(M):-
 	),
 	fail.
 
+/**
+ * listar_rating_alto_popularidad_baja/0
+ * 
+ * listar_rating_alto_popularidad_baja imprime en pantalla las sugerencias de animé
+ * que tengan rating alto (definido como ratings en el rango [4, 5], ambos inclusive) y
+ * popularidad baja (definido como valores de popularidad en el rango [1, 4], ambos inclusive).
+ */
 listar_rating_alto_popularidad_baja:-
 	anime_segun_popularidad(1, P1),
 	anime_segun_popularidad(2, P2),
