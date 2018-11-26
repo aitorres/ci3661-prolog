@@ -103,17 +103,26 @@ Algunas de las posibles respuestas del bot se obtienen de manera aleatoria de un
 
 El bot permite agregar nuevos animés a la lista de animé en su base de datos de manera dinámica. La palabra clave de este tipo de consultas es *nuevo*, y la sintaxis debe seguir la siguiente (de ejemplo):
 
-```
-Conozco un nuevo animé llamado Kimi No Nawa de 4 estrellas y de tipo Fantasía
-```
+`Conozco un nuevo animé llamado Kimi No Nawa de 4 estrellas y de tipo Fantasía`
 
 Opcionalmente, se puede reconocer la popularidad:
 
-```
-Conozco un nuevo animé llamado Kimi No Nawa de 4 estrellas y de tipo Fantasía de popularidad 7
-```
+`Conozco un nuevo animé llamado Kimi No Nawa de 4 estrellas y de tipo Fantasía de popularidad 7`
 
 Un ejemplo (tomado de la ejecución del programa) sigue:
+
+```swipl
+?- chat.
+Yuki:- Hola, soy Yuki. ¿Quieres hablar?
+Yo:- Aja mira, conocí este nuevo anime llamado Dragon Ball GT con 3 estrellas y de tipo Shounen
+Yuki:- Okay, ahora recordaré Dragon Ball GT
+Yo:- Dame un animé bastante conocido.
+Yuki:- Ah, sí, la popularidad. Déjame ver qué se me ocurre.
+Yuki:- En mi opinión, podrías ver Full Metal Alchemist que tiene un rating de 4 estrellas y una popularidad de 1 sobre 10 (sumados dan 5).
+Yuki:- Creo que te gustaría ver Dragon Ball GT que tiene un rating de 3 estrellas y una popularidad de 1 sobre 10 (sumados dan 4).
+Yuki:- Te recomiendo ver Eureka Seven que tiene un rating de 3 estrellas y una popularidad de 2 sobre 10 (sumados dan 5).
+Yuki:- Eso es todo, humano.
+```
 
 ### Consultas de animé por género, tipo de consulta y orden
 
