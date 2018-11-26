@@ -354,6 +354,20 @@ es_mensaje(
 ).
 
 es_mensaje(
+		"ayuda",
+		[
+			"Yuki:- Puedes leer mi Manual de Uso (README.txt o README.md) para conocer cómo funciono.",
+			"Yuki:- Pregúntame por uno o varios géneros (asegúrate de poner 'genero' y algún nombre de géneros en la consulta).",
+			"Yuki:- Puedes pasarme un criterio de popularidad, por ejemplo, pregúntame por animé poco conocidos.",
+			"Yuki:- Puedes preguntarme, si quieres, por un animé que sea bueno, o malo, o muy malo.",
+			"Yuki:- ¿Qué opinas de preguntar por animé de algún género, como Shounen?",
+			"Yuki:- Dime qué género te gusta y te recomendaré algunas cosas. Pero asegurate de decirme que te gusta, o no te entenderé.",
+			"Yuki:- Algunos géneros que conozco son: Mecha, Fantasía, Sobrenatural, Shounen, Shoujo...",
+			"Yuki:- Me da fastidio ayudarte ahorita. Pregúntame otra vez."
+		]
+	).
+
+es_mensaje(
 	"inicio_sugerencia_animé",
 	[
 		"Yuki:- Podrías ver el animé ",
@@ -452,7 +466,7 @@ imprimir_prompt:-
  * cada palabra hallada en la lista L
  */
 separar_frase(F, L):-
-	split_string(F, " ", " .,?", L).
+	split_string(F, " ", " .,?!¿¡", L).
 
 /**
  * es_palabra_de/2
@@ -590,6 +604,20 @@ es_agradecimiento(M):-
 	).
 
 /**
+ * es_ayuda/1
+ *
+ * es_ayuda(M) acierta si la string M contiene alguna palabra
+ * clave que identifique una solicitud de ayuda
+ */
+es_ayuda(M):-
+	(
+		es_palabra_de("ayuda", M); es_palabra_de("Ayuda", M);
+		es_palabra_de("ayudame", M); es_palabra_de("Ayudame", M);
+		es_palabra_de("ayúdame", M); es_palabra_de("Ayúdame", M);
+		es_palabra_de("help", M); es_palabra_de("Help", M)
+	).
+
+/**
  * es_saludo/1
  *
  * es_saludo(M) acierta si la string M contiene alguna palabra
@@ -648,6 +676,7 @@ obtener_tema(M, "agradecimiento"):- es_agradecimiento(M), !.
 obtener_tema(M, "clima"):- es_clima(M), !.
 obtener_tema(M, "hoteles"):- es_hoteles(M), !.
 obtener_tema(M, "identidad"):- es_identidad(M), !.
+obtener_tema(M, "ayuda"):- es_ayuda(M), !.
 obtener_tema(M, "bienvenida"):- es_saludo(M), !.
 obtener_tema(_, "desconocido").
 
@@ -662,6 +691,7 @@ tema_conversacional("bienvenida").
 tema_conversacional("clima").
 tema_conversacional("hoteles").
 tema_conversacional("identidad").
+tema_conversacional("ayuda").
 tema_conversacional("agradecimiento").
 tema_conversacional("desconocido").
 
