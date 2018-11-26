@@ -552,6 +552,20 @@ es_rating(M):-
 	).
 
 /**
+ * es_genero/1
+ * 
+ * es_genero(M) acierta si la string M contiene alguna palabra clave
+ * que identifique una consulta por género de anime
+ */
+es_genero(M):-
+	es_palabra_de("género", M); es_palabra_de("Género", M);
+	es_palabra_de("géneros", M); es_palabra_de("Géneros", M);
+	es_palabra_de("genero", M); es_palabra_de("Genero", M);
+	es_palabra_de("generos", M); es_palabra_de("Generos", M);
+	es_palabra_de("gusta", M); es_palabra_de("Gusta", M);
+	es_palabra_de("gustan", M); es_palabra_de("Gustan", M).
+
+/**
  * es_genero_rating/1
  *
  * es_genero_rating(M) acierta si la string M contiene alguna palabra
@@ -629,6 +643,7 @@ obtener_tema(M, "rating-alto-popularidad-baja"):- es_rating_alto_popularidad_baj
 obtener_tema(M, "genero-rating"):- es_genero_rating(M), !.
 obtener_tema(M, "popularidad"):- es_popularidad(M), !.
 obtener_tema(M, "rating"):- es_rating(M), !.
+obtener_tema(M, "genero"):- es_genero(M), !.
 obtener_tema(M, "agradecimiento"):- es_agradecimiento(M), !.
 obtener_tema(M, "clima"):- es_clima(M), !.
 obtener_tema(M, "hoteles"):- es_hoteles(M), !.
@@ -970,6 +985,24 @@ consultar_anime_por_orden(M):-
 	),
 	fail.
 
+listar_por_genero(M):-
+	imprimir("Yuki:- Veamos qué puedo hacer por ti. Si me quieres ayudar, ¡alza tus manos al cielo!"),
+	parsear_generos(M, G), !,
+	filtrar_anime_genero(G, Lf),
+	length(Lf, Tam), !,
+	(
+		(
+			Tam > 0, 
+			imprimir_sugerencias_de_anime(Lf),
+			imprimir("Yuki:- ¡Pero no te encasilles en unos pocos géneros, abre tu mente!")
+		);
+		(	
+			Tam == 0,
+			imprimir("Yuki:- No encontré animé con tus filtros de búsqueda. ¿Me ayudas con eso?")
+		)
+	),
+	fail.
+
 consultar_anime_por_genero_y_rating(M):-
 	imprimir("Yuki:- Oh, comprendo. Déjame ver qué puedo responderte, un momento. *sonidos de modem de CANTV*"),
 	parsear_generos(M, G), !,
@@ -1025,6 +1058,7 @@ responder(M):-
 		(T == "genero-rating", consultar_anime_por_genero_y_rating(M));
 		(T == "popularidad", listar_por_popularidad_desde_mensaje(M));
 		(T == "rating", listar_por_rating_desde_mensaje(M));
+		(T == "genero", listar_por_genero(M));
     	(T == "despedida", halt);
     	(T == "desconocido", 
     	 string_concat("Yuki:- No entendí esto: ", M, Mf),
