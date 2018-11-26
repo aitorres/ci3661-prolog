@@ -298,8 +298,25 @@ Además de estar facultado para dar detalles y responder a consultas sobre temas
 
 ## Otras observaciones
 
+### Ayuda del programa
+
+El bot puede generar algunos mensajes de ayuda rudimentarios, muy básicos, para orientar a un usuario. Basta que en la consulta coloque las palabras "ayuda", "ayúdame", "help" o similares. **Note sin embargo** que la ayuda del bot es un complemento (en ocasiones jocoso) a la ayuda oficial del programa, que se encuentra en este documento.
+
+Un ejemplo de uso de la ayuda (tomado de la ejecución del programa):
+
+```swipl
+?- chat.
+Yuki:- Un gusto, humano. Soy una interfaz automatizada para conocer series de animé.
+Yo:- ¡Necesito ayuda!
+Yuki:- Puedes pasarme un criterio de popularidad, por ejemplo, pregúntame por animé poco conocidos.
+Yo:- No, no, ayúdame más.
+Yuki:- Me da fastidio ayudarte ahorita. Pregúntame otra vez.
+Yo:- ¿Qué? Bot grosero. I need help!
+Yuki:- Puedes preguntarme, si quieres, por un animé que sea bueno, o malo, o muy malo.
+Yo:- Mmm... Está bien. Chao.
+Yuki:- Ya he aprendido suficiente de ti. Puedes irte.
+```
+
 ### Sobre este documento
 
 La maquetación de este documento fue realizada en *Markdown*, específicamente el dialecto de *Markdown* enriquecido para su uso en *Github*.
-
-@TODO: Escribir, si hacen falta
