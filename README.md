@@ -41,6 +41,46 @@ Yo:- Adiós, bot.
 
 Sea educado con el bot ;-)
 
+## Listas de género y animé
+
+Por defecto, el chatbot reconoce en su base de datos los siguientes géneros:
+
+- Aventura
+- Shoujo
+- Shounen
+- Kodomo
+- Seinen
+- Josei
+- Ficción
+- Fantasía
+- Mecha
+- Sobrenatural
+- Magia
+- Gore
+
+De igual forma, por defecto, tiene conocimiento de las siguientes series de animé:
+
+- Dragon Ball
+- Naruto
+- Bleach
+- HunterXHunter
+- Hamtaro
+- Full Metal Alchemist
+- Suzumiya Haruhi No Yuutsu
+- Sword Art Online
+- Another
+- Death Note
+- Attack Oon Titan
+- Steins;Gate
+- Pokémon
+- InuYasha
+- Kuroshitsuji
+- Yu-Gi-Oh!
+- Digimon
+- Eureka Seven
+
+Cada animé cuenta con su información asociada de género o géneros (hasta 5), rating y popularidad, en función de lo establecido por el cuerpo profesional, reseñas de internet y apreciación personal de los estudiantes.
+
 ## Detalles de Implementación
 
 Esta sección describe algunos detalles de la implementación del bot de animé, decisiones de estructura y diseño, cambios con respecto a lo solicitado en el enunciado (si aplica), entre otros.
@@ -58,6 +98,75 @@ Se garantiza el reconocimiento de las frases especificadas en este documento **s
 ### Aleatoriedad en respuestas
 
 Algunas de las posibles respuestas del bot se obtienen de manera aleatoria de una base de datos de respuestas de acuerdo al tema, para darle más dinamismo y cierta personalidad. La lista completa de mensajes puede encontrarse en las definiciones de las reglas `es_mensaje` en [anibot.pl](anibot.pl).
+
+### Consultas de animé por género, tipo de consulta y orden
+
+El bot está facultado para responder ante consultas para listar animés que pertenezcan algún género dado, siguiendo un orden dado en enumeración y con algún criterio de orden.
+
+Se pueden seleccionar como **órdenes de enumeración**:
+
+- De mayor a menor
+- De menor a mayor
+
+Por defecto, se selecciona de mayor a menor.
+
+Se pueden seleccionar como **criterios de órden**:
+
+- Por rating
+- Por popularidad
+- Ambos (entendido como *rating y popularidad*, ó *ambos* criterios)
+
+Se pueden solicitar sugerencias de uno o varios géneros de animé. En caso de que se introduzcan varios, se consultará de manera inclusiva: si un animé pertenece a *alguno* de esos géneros, se mostrará en las recomendaciones.
+
+**NOTA IMPORTANTE**: Para poder ejecutar esta consulta, la frase a utilizar debe contener las palabras clave *conocer*, *consultar*, *listar* y/o *saber*. Es una de las consultas más críticas y estrictas en su *phrasing*.
+
+**NOTA IMPORTANTE**: Para que el bot reconozca un género, debe escribirse *TAL CUAL* figura en la lista de géneros, con mayúsculas y acentos si aplica.
+
+A continuación se muestra una conversación con varios ejemplos de uso (tomado de la ejecución del programa, con líneas y espacios en blanco agregada para facilitar legibilidad):
+
+```swipl
+?- chat.
+Yuki:- ¿Aló? Sí, ¿diga?
+Yo:- Sí, vamos al grano. Quiero conocer de animé Shounen por rating de menor a mayor.
+
+Yuki:- Voy a poner todo el poder de procesamiento que tengo para responderte.
+Yuki:- Creo que te gustaría ver Naruto que tiene un rating de 1 estrellas y una popularidad de 5 sobre 10 (sumados dan 6).
+Yuki:- Te recomiendo ver Dragon Ball que tiene un rating de 3 estrellas y una popularidad de 7 sobre 10 (sumados dan 10).
+Yuki:- Creo que te gustaría ver Yu-Gi-Oh! que tiene un rating de 3 estrellas y una popularidad de 7 sobre 10 (sumados dan 10).
+Yuki:- Podrías ver el animé Bleach que tiene un rating de 4 estrellas y una popularidad de 8 sobre 10 (sumados dan 12).
+Yuki:- Creo que te gustaría ver Full Metal Alchemist que tiene un rating de 4 estrellas y una popularidad de 1 sobre 10 (sumados dan 5).
+Yuki:- Te recomiendo ver Digimon que tiene un rating de 4 estrellas y una popularidad de 8 sobre 10 (sumados dan 12).
+Yuki:- ¿Qué tal te parecen mis sugerencias?
+
+Yo:- Okay, ahora quiero conocer animé Sobrenatural por popularidad de mayor a menor.
+
+Yuki:- Voy a poner todo el poder de procesamiento que tengo para responderte.
+Yuki:- Creo que te gustaría ver Death Note que tiene un rating de 5 estrellas y una popularidad de 10 sobre 10 (sumados dan 15).
+Yuki:- Te recomiendo ver Bleach que tiene un rating de 4 estrellas y una popularidad de 8 sobre 10 (sumados dan 12).
+Yuki:- Te puedo sugerir el animé Suzumiya Haruhi no Yuutsu que tiene un rating de 3 estrellas y una popularidad de 6 sobre 10 (sumados dan 9).
+Yuki:- Te puedo sugerir el animé Another que tiene un rating de 4 estrellas y una popularidad de 5 sobre 10 (sumados dan 9).
+Yuki:- Te recomiendo ver Steins;Gate que tiene un rating de 2 estrellas y una popularidad de 4 sobre 10 (sumados dan 6).
+Yuki:- ¿Qué tal te parecen mis sugerencias?
+
+Yo:- ¿Me puedes listar animé de Fantasía por rating?
+
+Yuki:- Voy a poner todo el poder de procesamiento que tengo para responderte.
+Yuki:- Podrías ver el animé Digimon que tiene un rating de 4 estrellas y una popularidad de 8 sobre 10 (sumados dan 12).
+Yuki:- Creo que te gustaría ver Pokémon que tiene un rating de 4 estrellas y una popularidad de 10 sobre 10 (sumados dan 14).
+Yuki:- Podrías ver el animé Sword Art Online que tiene un rating de 4 estrellas y una popularidad de 9 sobre 10 (sumados dan 13).
+Yuki:- Creo que te gustaría ver Suzumiya Haruhi no Yuutsu que tiene un rating de 3 estrellas y una popularidad de 6 sobre 10 (sumados dan 9).
+Yuki:- ¿Qué tal te parecen mis sugerencias?
+
+Yo:- Ahora quiero saber de animé Shoujo de menor a mayor por rating y popularidad.
+
+Yuki:- Voy a poner todo el poder de procesamiento que tengo para responderte.
+Yuki:- Te puedo sugerir el animé Kuroshitsuji que tiene un rating de 2 estrellas y una popularidad de 3 sobre 10 (sumados dan 5).
+Yuki:- Creo que te gustaría ver InuYasha que tiene un rating de 4 estrellas y una popularidad de 8 sobre 10 (sumados dan 12).
+Yuki:- ¿Qué tal te parecen mis sugerencias?
+
+Yo:- Finas. Chao.
+Yuki:- I'll be back!~
+```
 
 ### Consultas por rating alto y popularidad baja
 

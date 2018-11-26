@@ -12,6 +12,11 @@ géneros, ratings y popularidad.
 
 :- use_module(library(random)).
 
+% Comentario de los autores: Prolog debería tener este predicado nativo :-(
+and(A, B):- A, B.
+and(A, B, C):- A, B, C.
+and(A, B, C, D):- A, B, C, D.
+
 % ==========================================================================
 % Predicados sobre animé
 % ==========================================================================
@@ -149,6 +154,19 @@ popularidad("Yu-Gi-Oh!", 7).
 popularidad("Digimon", 8).
 popularidad("Eureka Seven", 2).
 
+/**
+ * ratingPopularidad/2
+ * 
+ * ratingPopularidad(A, X) acierta si el animé A 
+ * tiene un valor sumado (previamente calculado) de rating
+ * y puntuación X
+ */
+ratingPopularidad(A, X):- 
+	anime(A),
+	popularidad(A, P),
+	rating(A, R),
+	X is P+R.
+
 % ==========================================================================
 % Funciones auxiliares de animé
 % ==========================================================================
@@ -174,6 +192,38 @@ anime_segun_popularidad(P, L):-
 	P >= 1,
 	10 >= P,
 	findall(X, popularidad(X, P), L).
+
+/**
+ * anime_segun_ratingPopularidad/2
+ *
+ * Si R es un entero entre 2 y 15, unifica en L una lista con todos los
+ * animé cuyo valor sumado de rating y popularidad es RP.
+ */
+anime_segun_ratingPopularidad(RP, L):-
+	RP >= 2,
+	15 >= RP,
+	findall(X, ratingPopularidad(X, RP), L).
+
+/**
+ * tiene_genero/2
+ * 
+ * Si G es un género válido y A un animé válido, acierta si el animé
+ * A tiene a G entre sus géneros.
+ */
+tiene_genero(G, A):-
+	genero(G), anime(A), !,
+	generoAnime(A, L),
+	member(G, L).
+
+/**
+ * anime_segun_genero/2
+ *
+ * Si G es un genero de animé válido, unifica en L una lista con todos los
+ * animé cuyo género es G.
+ */
+anime_segun_genero(G, L):-
+	genero(G), !,
+	findall(X, tiene_genero(G, X), L).
 
 % ==========================================================================
 % Mensajes del bot
@@ -540,11 +590,25 @@ es_rating_alto_popularidad_baja(M):-
 	).
 
 /**
+ * es_consultar_anime_orden/1
+ * 
+ * es_consultar_anime_orden(M) acierta si la string M contiene alguna
+ * palabra clave que identifique la consulta por animés ordenados
+ */
+es_consultar_anime_orden(M):-
+	es_palabra_de("consultar", M);
+	es_palabra_de("conocer", M);
+	es_palabra_de("saber", M);
+	es_palabra_de("listar", M);
+	es_palabra_de("consultar", M).
+
+/**
  * obtener_tema/1
  *
  * Obtener_tema determina el tema de una frase M según su contenido.
  */
 obtener_tema(M, "despedida"):- es_despedida(M), !.
+obtener_tema(M, "consultar-anime-orden"):- es_consultar_anime_orden(M), !.
 obtener_tema(M, "rating-alto-popularidad-baja"):- es_rating_alto_popularidad_baja(M), !.
 obtener_tema(M, "popularidad"):- es_popularidad(M), !.
 obtener_tema(M, "rating"):- es_rating(M), !.
@@ -597,7 +661,7 @@ existe_anime_con_lista_popularidad([X | Xs]) :- existe_anime_con_num_popularidad
 /**
  * parsear_popularidad/2
  *
- * parsear_poopularidad(M, P) determina qué palabras clave en la frase M corresponden a 
+ * parsear_popularidad(M, P) determina qué palabras clave en la frase M corresponden a 
  * qué tipo de valores de popularidad, entre 1 y 10, y unifica P con la lista de estos
  * valores de acuerdo a lo establecido en el enunciado.
  *
@@ -625,6 +689,44 @@ parsear_rating(M, P):- es_palabra_de("malo", M), !, P = 2.
 parsear_rating(_, P):- !, P = 3.
 
 /**
+ * parsear_tipo_clasificacion/2
+ * 
+ * parsear_tipo_clasificacion(M, O) determina bajo qué criterios quiere ordenar el usuario
+ * los anime que solicita; por defecto, se ordena solo por rating.
+ */
+parsear_tipo_clasificacion(M, "ambos") :- es_palabra_de("rating", M), es_palabra_de("popularidad", M), !.
+parsear_tipo_clasificacion(M, "ambos") :- es_palabra_de("ambos", M), !.
+parsear_tipo_clasificacion(M, "popularidad"):- es_palabra_de("popularidad", M), !.
+parsear_tipo_clasificacion(_, "rating").
+
+/**
+ * parsear_orden/2
+ * 
+ * parsear_orden(M, O) determina en qué orden se debe mostrar una consulta según lo
+ * solicitado en la frase, hallando la primera palabra entre mayor y menor en la frase
+ * y asumiendo que ahí comienza su orden. Por defecto, se ordena de mayor a menor.
+ */
+parsear_orden(M, "menor"):- 
+	es_palabra_de("menor", M),
+	es_palabra_de("mayor", M),
+	separar_frase(M, L),
+	nth0(I1, L, "menor"),
+	nth0(I2, L, "mayor"),
+	I1 < I2, !.
+
+parsear_orden(_, "mayor").
+
+/**
+ * parsear_generos/2
+ * 
+ * parsear_generos(M, G) determina qué palabras de M corresponden a géneros de animé
+ * válidos y los unifica en una lista en G.
+ */
+parsear_generos(M, G):-
+	separar_frase(M, F),
+	findall(X, and(member(X, F), genero(X)), G).
+
+/**
  * imprimir_sugerencias_de_anime/1
  *
  * imprimir_sugerencias_de_anime(L) recibe una lista de nombres de animé e imprime frases
@@ -634,13 +736,16 @@ imprimir_sugerencias_de_anime([]).
 imprimir_sugerencias_de_anime([X|Xs]):-
 	rating(X, R),
 	popularidad(X, P),
+	ratingPopularidad(X, RP),
 	obtener_mensaje_aleatorio("inicio_sugerencia_animé", S0),
 	string_concat(S0, X, S1),
 	string_concat(S1, " que tiene un rating de ", S2),
 	string_concat(S2, R, S3),
 	string_concat(S3, " estrellas y una popularidad de ", S4),
 	string_concat(S4, P, S5),
-	string_concat(S5, " sobre 10.", S),
+	string_concat(S5, " sobre 10 (sumados dan ", S6),
+	string_concat(S6, RP, S7),
+	string_concat(S7, ").", S),
 	imprimir(S),
 	imprimir_sugerencias_de_anime(Xs).
 
@@ -738,6 +843,98 @@ listar_rating_alto_popularidad_baja:-
 	imprimir("Yuki:- Tengo eso por ahora. ¿Qué opinas? ¡Míralas y cuéntame luego!"),
 	fail.
 
+filtrar_anime_genero(G, L):-
+	findall(X, and(generoAnime(X, G1), intersection(G1, G, Gi), length(Gi, Largo), Largo > 0), L).
+
+filtrar_lista_clasificacion(L0, "ambos", Lf):-
+	findall(X, and(member(X, L0), anime_segun_ratingPopularidad(15, Lp15), member(X, Lp15)), L15),
+	findall(X, and(member(X, L0), anime_segun_ratingPopularidad(14, Lp14), member(X, Lp14)), L14),
+	findall(X, and(member(X, L0), anime_segun_ratingPopularidad(13, Lp13), member(X, Lp13)), L13),
+	findall(X, and(member(X, L0), anime_segun_ratingPopularidad(12, Lp12), member(X, Lp12)), L12),
+	findall(X, and(member(X, L0), anime_segun_ratingPopularidad(11, Lp11), member(X, Lp11)), L11),
+	findall(X, and(member(X, L0), anime_segun_ratingPopularidad(10, Lp10), member(X, Lp10)), L10),
+	findall(X, and(member(X, L0), anime_segun_ratingPopularidad(9, Lp9), member(X, Lp9)), L9),
+	findall(X, and(member(X, L0), anime_segun_ratingPopularidad(8, Lp8), member(X, Lp8)), L8),
+	findall(X, and(member(X, L0), anime_segun_ratingPopularidad(7, Lp7), member(X, Lp7)), L7),
+	findall(X, and(member(X, L0), anime_segun_ratingPopularidad(6, Lp6), member(X, Lp6)), L6),
+	findall(X, and(member(X, L0), anime_segun_ratingPopularidad(5, Lp5), member(X, Lp5)), L5),
+	findall(X, and(member(X, L0), anime_segun_ratingPopularidad(4, Lp4), member(X, Lp4)), L4),
+	findall(X, and(member(X, L0), anime_segun_ratingPopularidad(3, Lp3), member(X, Lp3)), L3),
+	findall(X, and(member(X, L0), anime_segun_ratingPopularidad(2, Lp2), member(X, Lp2)), L2),
+	append(L2, L3, LP1),
+	append(LP1, L4, LP2),
+	append(LP2, L5, LP3),
+	append(LP3, L6, LP4),
+	append(LP4, L7, LP5),
+	append(LP5, L8, LP6),
+	append(LP6, L9, LP7),
+	append(LP7, L10, LP8),
+	append(LP8, L11, LP9),
+	append(LP9, L12, LP10),
+	append(LP10, L13, LP11),
+	append(LP11, L14, LP12),
+	append(LP12, L15, Lf).
+
+filtrar_lista_clasificacion(L0, "popularidad", Lf):-
+	findall(X, and(member(X, L0), anime_segun_popularidad(10, Lp10), member(X, Lp10)), L10),
+	findall(X, and(member(X, L0), anime_segun_popularidad(9, Lp9), member(X, Lp9)), L9),
+	findall(X, and(member(X, L0), anime_segun_popularidad(8, Lp8), member(X, Lp8)), L8),
+	findall(X, and(member(X, L0), anime_segun_popularidad(7, Lp7), member(X, Lp7)), L7),
+	findall(X, and(member(X, L0), anime_segun_popularidad(6, Lp6), member(X, Lp6)), L6),
+	findall(X, and(member(X, L0), anime_segun_popularidad(5, Lp5), member(X, Lp5)), L5),
+	findall(X, and(member(X, L0), anime_segun_popularidad(4, Lp4), member(X, Lp4)), L4),
+	findall(X, and(member(X, L0), anime_segun_popularidad(3, Lp3), member(X, Lp3)), L3),
+	findall(X, and(member(X, L0), anime_segun_popularidad(2, Lp2), member(X, Lp2)), L2),
+	findall(X, and(member(X, L0), anime_segun_popularidad(1, Lp1), member(X, Lp1)), L1),
+	append(L1, L2, LP),
+	append(LP, L3, LP2),
+	append(LP2, L4, LP3),
+	append(LP3, L5, LP4),
+	append(LP4, L6, LP5),
+	append(LP5, L7, LP6),
+	append(LP6, L8, LP7),
+	append(LP7, L9, LP8),
+	append(LP8, L10, Lf).
+
+filtrar_lista_clasificacion(L0, _, Lf):-
+	findall(X, and(member(X, L0), anime_segun_rating(5, Lp5), member(X, Lp5)), L5),
+	findall(X, and(member(X, L0), anime_segun_rating(4, Lp4), member(X, Lp4)), L4),
+	findall(X, and(member(X, L0), anime_segun_rating(3, Lp3), member(X, Lp3)), L3),
+	findall(X, and(member(X, L0), anime_segun_rating(2, Lp2), member(X, Lp2)), L2),
+	findall(X, and(member(X, L0), anime_segun_rating(1, Lp1), member(X, Lp1)), L1),
+	append(L1, L2, LP),
+	append(LP, L3, LP2),
+	append(LP2, L4, LP3),
+	append(LP3, L5, Lf).
+	
+filtrar_lista_orden(L0, O, Lf):-
+	(
+		(O == "mayor", reverse(L0, Lf));
+		(O == "menor", Lf = L0)
+	).
+
+consultar_anime_por_orden(M):-
+	parsear_generos(M, G),
+	parsear_tipo_clasificacion(M, T),
+	parsear_orden(M, O),
+	imprimir("Yuki:- Voy a poner todo el poder de procesamiento que tengo para responderte."),
+	filtrar_anime_genero(G, L1), !,
+	filtrar_lista_clasificacion(L1, T, L2), !,
+	filtrar_lista_orden(L2, O, Lf), !,
+	length(Lf, Tam), !,
+	(
+		(
+			Tam > 0, 
+			imprimir_sugerencias_de_anime(Lf),
+			imprimir("Yuki:- ¿Qué tal te parecen mis sugerencias?")
+		);
+		(	
+			Tam == 0,
+			imprimir("Yuki:- No encontré animé con tus filtros de búsqueda. ¿Me ayudas con eso?")
+		)
+	),
+	fail.
+
 % ==========================================================================
 % Funciones auxiliares de conversación del bot
 % ==========================================================================
@@ -767,6 +964,7 @@ responder(M):-
     	(not(tema_conversacional(T)))
     ),
     (
+		(T == "consultar-anime-orden", consultar_anime_por_orden(M));
 		(T == "rating-alto-popularidad-baja", listar_rating_alto_popularidad_baja);
 		(T == "popularidad", listar_por_popularidad_desde_mensaje(M));
 		(T == "rating", listar_por_rating_desde_mensaje(M));
