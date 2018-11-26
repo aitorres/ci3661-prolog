@@ -35,11 +35,11 @@ anime(X) :- member(
         "HunterXHunter",
         "Hamtaro",
         "Full Metal Alchemist",
-        "Suzumiya Haruhi no Yuutsu",
+        "Suzumiya Haruhi No Yuutsu",
         "Sword Art Online",
         "Another",
         "Death Note",
-        "Attack on Titan",
+        "Attack On Titan",
         "Steins;Gate",
         "Pokémon",
         "InuYasha",
@@ -94,11 +94,11 @@ generoAnime("Bleach", ["Shounen", "Sobrenatural"]).
 generoAnime("HunterXHunter", ["Seinen", "Aventura"]).
 generoAnime("Hamtaro", ["Kodomo"]).
 generoAnime("Full Metal Alchemist", ["Shounen", "Magia"]).
-generoAnime("Suzumiya Haruhi no Yuutsu", ["Aventura", "Fantasía", "Sobrenatural"]).
+generoAnime("Suzumiya Haruhi No Yuutsu", ["Aventura", "Fantasía", "Sobrenatural"]).
 generoAnime("Sword Art Online", ["Aventura", "Ficción", "Fantasía"]).
 generoAnime("Another", ["Aventura", "Sobrenatural", "Gore"]).
 generoAnime("Death Note", ["Aventura", "Sobrenatural", "Ficción"]).
-generoAnime("Attack on Titan", ["Aventura", "Gore"]).
+generoAnime("Attack On Titan", ["Aventura", "Gore"]).
 generoAnime("Steins;Gate", ["Ficción", "Aventura", "Sobrenatural"]).
 generoAnime("Pokémon", ["Fantasía", "Aventura", "Kodomo"]).
 generoAnime("InuYasha", ["Aventura", "Shoujo"]).
@@ -128,11 +128,11 @@ rating("Bleach", 4).
 rating("HunterXHunter", 5).
 rating("Hamtaro", 1).
 rating("Full Metal Alchemist", 4).
-rating("Suzumiya Haruhi no Yuutsu", 3).
+rating("Suzumiya Haruhi No Yuutsu", 3).
 rating("Sword Art Online", 4).
 rating("Another", 4).
 rating("Death Note", 5).
-rating("Attack on Titan", 5).
+rating("Attack On Titan", 5).
 rating("Steins;Gate", 2).
 rating("Pokémon", 4).
 rating("InuYasha", 4).
@@ -162,11 +162,11 @@ popularidad("Bleach", 8).
 popularidad("HunterXHunter", 3).
 popularidad("Hamtaro", 10).
 popularidad("Full Metal Alchemist", 1).
-popularidad("Suzumiya Haruhi no Yuutsu", 6).
+popularidad("Suzumiya Haruhi No Yuutsu", 6).
 popularidad("Sword Art Online", 9).
 popularidad("Another", 5).
 popularidad("Death Note", 10).
-popularidad("Attack on Titan", 10).
+popularidad("Attack On Titan", 10).
 popularidad("Steins;Gate", 4).
 popularidad("Pokémon", 10).
 popularidad("InuYasha", 8).
@@ -437,6 +437,29 @@ es_mensaje(
 acceder(L, I, X):- R is I-1, nth0(R, L, X).
 
 /**
+ * member_string/2
+ * member_string(C, S) es verdad si C es un caracter del
+ * string S. 
+ */
+member_string(C, S):- string_chars(S, SC), member(C, SC).
+
+/**
+ * cabeza_string/2
+ * cabeza_string(S, C) es verdad si C es el primer caracter del string
+ * S.
+ */
+cabeza_string(S, C):-
+	string_chars(S, C1),
+	acceder(C1, 1, C).
+
+/**
+ * es_mayuscula/1
+ * es_mayuscula(C) es verdad si C es mayuscula.
+*/
+es_mayuscula(C) :-
+	member_string(C, "ABCDEFGHIJKLMNOPQRSTUVWXYZ").
+
+/**
  * obtener_mensaje_aleatorio/2
  * 
  * obtener_mensaje_aleatorio(L, M) unifica en M un mensaje obtenido
@@ -452,6 +475,12 @@ obtener_mensaje_aleatorio(Tipo, Mensaje):-
     random(1, Tope, Indice),
     acceder(Lista, Indice, Mensaje).
 
+insertar_espacios([H | []], S) :-
+	H = S.
+insertar_espacios([H | T], S) :-
+	insertar_espacios(T, S1),
+	string_concat(H, " ", Cabeza),
+	string_concat(Cabeza, S1, S).
 % ==========================================================================
 % Funciones auxiliares de I/O del bot
 % ==========================================================================
@@ -648,6 +677,19 @@ es_agradecimiento(M):-
 	).
 
 /**
+ * es_agregar/1
+ * es_nuevo(M) acierta si el string M contiene alguna palabra
+ * clave que indentifique que quiere agregar un nuevo anime.
+ */
+es_agregar(M) :-
+	(
+		es_palabra_de("agrega", M); es_palabra_de("Agrega", M);
+		es_palabra_de("añade", M); es_palabra_de("Añade", M);
+		es_palabra_de("coloca", M); es_palabra_de("Coloca", M);
+		es_palabra_de("recuerda", M); es_palabra_de("Recuerda", M);
+		es_palabra_de("nuevo", M); es_palabra_de("Nuevo", M)
+	).
+/**
  * es_ayuda/1
  *
  * es_ayuda(M) acierta si la string M contiene alguna palabra
@@ -710,6 +752,7 @@ es_consultar_anime_orden(M):-
  * Obtener_tema determina el tema de una frase M según su contenido.
  */
 obtener_tema(M, "despedida"):- es_despedida(M), !.
+obtener_tema(M, "agregar") :- es_agregar(M), !.
 obtener_tema(M, "consultar-anime-orden"):- es_consultar_anime_orden(M), !.
 obtener_tema(M, "rating-alto-popularidad-baja"):- es_rating_alto_popularidad_baja(M), !.
 obtener_tema(M, "genero-rating"):- es_genero_rating(M), !.
@@ -720,10 +763,9 @@ obtener_tema(M, "agradecimiento"):- es_agradecimiento(M), !.
 obtener_tema(M, "clima"):- es_clima(M), !.
 obtener_tema(M, "hoteles"):- es_hoteles(M), !.
 obtener_tema(M, "identidad"):- es_identidad(M), !.
+obtener_tema(M, "agradecimiento"):- es_agradecimiento(M), !.
 obtener_tema(M, "ayuda"):- es_ayuda(M), !.
-obtener_tema(M, "bienvenida"):- es_saludo(M), !.
 obtener_tema(_, "desconocido").
-
 /**
  * tema_conversacional/1
  *
@@ -851,6 +893,22 @@ parsear_estrellas(M, N):-
 	number_codes(N, Ns).
 
 /**
+ * parsear_popularidad_agregar/2
+ * 
+ * parsear_popularidad_agregar(M, N) ubica la palabra 'popularidad' (o derivadas) en una frase y
+ * retorna un casteo a entero de la palabra inmediatamente siguiente.
+ */
+parsear_popularidad_agregar(M, N):-
+	separar_frase(M, F),
+	(
+		nth0(I, F, "popularidad"), !;
+		nth0(I, F, "popular"), !
+	),
+	I2 is I+1,  
+	nth0(I2, F, Ns),
+	number_codes(N, Ns).
+
+/**
  * imprimir_sugerencias_de_anime/1
  *
  * imprimir_sugerencias_de_anime(L) recibe una lista de nombres de animé e imprime frases
@@ -917,6 +975,57 @@ listar_por_popularidad_desde_mensaje(M):-
 	),
 	fail.
 
+/**
+ * es_nuevo_anime/2
+ * es_nuevo_anime(M, P) es verdad si P es el título del nuevo animé
+ */
+es_nuevo_anime(M, P) :-
+	separar_frase(M, L),
+	parsear_anime(L, P).
+
+/**
+ * parsear_anime/2
+ * parsear_anime(M, P) es verdad si P es un titulo de animé
+ * luego de la primera ocurrencia de
+ * "agregar" o "Agregar".
+ */
+parsear_anime([Cabeza | Cola], P) :-
+	% Cabeza \== "agrega",
+	% Cabeza \== "Agrega",
+	\+(es_agregar(Cabeza)),
+	parsear_anime(Cola, P).
+
+parsear_anime([Cabeza | Cola], P) :-
+	% (Cabeza == "agrega"; Cabeza == "Agrega"),
+	es_agregar(Cabeza),
+	obtener_anime(Cola, P, 0).
+	
+/**
+ * obtener_anime/2
+ * obtener_anime(M, P) es verdad si P es el título de un anime,
+ * que será la primera subcadena de palabras capitalizadas.
+ */
+
+% Final de string
+obtener_anime([], [], Parseando) :-
+	Parseando is 1.
+
+% si ya se terminó de parsear
+obtener_anime([Cabeza | _], [], 1) :- 
+	cabeza_string(Cabeza, C),
+	\+(es_mayuscula(C)).
+
+% si aun no se ha empezado a parsear
+obtener_anime([Cabeza | Cola], P, 0) :-
+	cabeza_string(Cabeza, C),
+	\+(es_mayuscula(C)),
+	obtener_anime(Cola, P, 0).
+
+obtener_anime([Cabeza | Cola], [H | T], _) :-
+	cabeza_string(Cabeza, C),
+	es_mayuscula(C),
+	H = Cabeza,
+	obtener_anime(Cola, T, 1).
 /**
  * listar_por_rating_desde_mensaje/1
  *
@@ -1167,6 +1276,31 @@ responder(M):-
     	(not(tema_conversacional(T)))
     ),
     (
+		(
+			T == "agregar", 
+			es_nuevo_anime(M, Titulo),
+			parsear_generos(M, Generos),
+			parsear_estrellas(M, Rating),
+			% Agregamos el animé
+			insertar_espacios(Titulo, TituloString),
+
+			assertz(anime(TituloString)),
+			assertz(generoAnime(TituloString, Generos)),
+			assertz(rating(TituloString, Rating)),
+
+			(
+				(
+					es_palabra_de("popularidad", M), 
+					parsear_popularidad_agregar(M, N),
+					assertz(popularidad(TituloString, N))
+				);
+				not(es_palabra_de("popularidad", M)), assertz(popularidad(TituloString, 1))
+			), !,
+
+			string_concat("Yuki:- Okay, ahora recordaré ", TituloString, Respuesta),
+			imprimir(Respuesta),
+			fail
+		);
 		(T == "consultar-anime-orden", consultar_anime_por_orden(M));
 		(T == "rating-alto-popularidad-baja", listar_rating_alto_popularidad_baja);
 		(T == "genero-rating", consultar_anime_por_genero_y_rating(M));
