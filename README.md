@@ -31,6 +31,8 @@ Al realizar la carga satisfactoriamente (se lee **true** en la pantalla), basta 
 chat.
 ```
 
+El flujo de interacción con el bot corresponde a mensajes (preguntas, consultas) del usuario y respuestas del bot. Los mensajes del bot vienen identificados con el prompt *Yuki:-*, mientras que los mensajes del usuario vienen identificados con el prompt *Yo:-*. Si en pantalla se muestra el prompt *Yo:-*, el programa está a la espera de un mensaje del usuario.
+
 Para terminar la ejecución, usted debe despedirse del bot. Por ejemplo, decir algo como:
 
 ```swipl
