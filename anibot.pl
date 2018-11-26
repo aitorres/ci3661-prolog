@@ -48,7 +48,7 @@ anime(X) :- member(
         "Digimon",
         "Eureka Seven"
     ]
-), !.
+).
     
 /**
  * genero(X:string) es determinado
@@ -1222,11 +1222,13 @@ responder(M):-
 			parsear_generos(M, Generos),
 			parsear_estrellas(M, Rating),
 			% Agregamos el animé
-			assertz(anime(X) :- separar_frase(X, Titulo)),
 			insertar_espacios(Titulo, TituloString),
+			assertz(anime(TituloString)),
 			
 			assertz(generoAnime(TituloString, Generos)),
 			assertz(rating(TituloString, Rating)),
+			assertz(popularidad(TituloString, 1)),
+
 			string_concat("Ok, ahora recordaré ", TituloString, Respuesta),
 			imprimir(Respuesta),
 			fail
