@@ -41,6 +41,46 @@ Yo:- Adiós, bot.
 
 Sea educado con el bot ;-)
 
+## Listas de género y animé
+
+Por defecto, el chatbot reconoce en su base de datos los siguientes géneros:
+
+- Aventura
+- Shoujo
+- Shounen
+- Kodomo
+- Seinen
+- Josei
+- Ficción
+- Fantasía
+- Mecha
+- Sobrenatural
+- Magia
+- Gore
+
+De igual forma, por defecto, tiene conocimiento de las siguientes series de animé:
+
+- Dragon Ball
+- Naruto
+- Bleach
+- HunterXHunter
+- Hamtaro
+- Full Metal Alchemist
+- Suzumiya Haruhi No Yuutsu
+- Sword Art Online
+- Another
+- Death Note
+- Attack Oon Titan
+- Steins;Gate
+- Pokémon
+- InuYasha
+- Kuroshitsuji
+- Yu-Gi-Oh!
+- Digimon
+- Eureka Seven
+
+Cada animé cuenta con su información asociada de género o géneros (hasta 5), rating y popularidad, en función de lo establecido por el cuerpo profesional, reseñas de internet y apreciación personal de los estudiantes.
+
 ## Detalles de Implementación
 
 Esta sección describe algunos detalles de la implementación del bot de animé, decisiones de estructura y diseño, cambios con respecto a lo solicitado en el enunciado (si aplica), entre otros.
