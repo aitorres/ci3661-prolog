@@ -524,11 +524,28 @@ es_saludo(M):-
 	).
 
 /**
+ * es_rating_alto_popularidad_baja/1
+ * 
+ * es_rating_alto_popularidad_baja(M) acierta si la string M contiene alguna
+ * palabra clave que identifique la consulta por animé con popularidad baja
+ * pero rating alto.
+ */
+es_rating_alto_popularidad_baja(M):-
+
+	es_palabra_de("poco", M),
+	(es_palabra_de("conocido", M); es_palabra_de("conocidos", M)),
+	(
+		es_palabra_de("bueno", M); es_palabra_de("buenos", M);
+		es_palabra_de("interesante", M); es_palabra_de("interesantes", M)
+	).
+
+/**
  * obtener_tema/1
  *
  * Obtener_tema determina el tema de una frase M según su contenido.
  */
 obtener_tema(M, "despedida"):- es_despedida(M), !.
+obtener_tema(M, "rating-alto-popularidad-baja"):- es_rating_alto_popularidad_baja(M), !.
 obtener_tema(M, "popularidad"):- es_popularidad(M), !.
 obtener_tema(M, "rating"):- es_rating(M), !.
 obtener_tema(M, "agradecimiento"):- es_agradecimiento(M), !.
@@ -691,6 +708,29 @@ listar_por_rating_desde_mensaje(M):-
 	),
 	fail.
 
+listar_rating_alto_popularidad_baja:-
+	anime_segun_popularidad(1, P1),
+	anime_segun_popularidad(2, P2),
+	anime_segun_popularidad(3, P3),
+	anime_segun_popularidad(4, P4),
+	list_to_set(P1, PS1),
+	list_to_set(P2, PS2),
+	list_to_set(P3, PS3),
+	list_to_set(P4, PS4),
+	anime_segun_rating(5, R1),
+	anime_segun_rating(4, R2),
+	list_to_set(R1, RS1),
+	list_to_set(R2, RS2),
+	union(PS1, PS2, PSU1),
+	union(PSU1, PS3, PSU2),
+	union(PSU2, PS4, PSU),
+	union(RS1, RS2, RSU),
+	intersection(PSU, RSU, L),
+	imprimir("Yuki:- Ah, ¿quieres ver de esas series que son super buenas pero no han sido vistas por tanta gente?"),
+	imprimir_sugerencias_de_anime(L),
+	imprimir("Yuki:- Tengo eso por ahora. ¿Qué opinas? ¡Míralas y cuéntame luego!"),
+	fail.
+
 % ==========================================================================
 % Funciones auxiliares de conversación del bot
 % ==========================================================================
@@ -720,6 +760,7 @@ responder(M):-
     	(not(tema_conversacional(T)))
     ),
     (
+		(T == "rating-alto-popularidad-baja", listar_rating_alto_popularidad_baja);
 		(T == "popularidad", listar_por_popularidad_desde_mensaje(M));
 		(T == "rating", listar_por_rating_desde_mensaje(M));
     	(T == "despedida", halt);
