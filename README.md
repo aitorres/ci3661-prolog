@@ -25,6 +25,12 @@ Posteriormente, dentro del intérprete de prolog, cargar el archivo:
 [anibot].
 ```
 
+Alternativamente, se puede realizar la carga del archivo desde el terminal de comandos, iniciando el intérprete `swipl` con el flag `-s` de la siguiente manera (de nuevo, en la misma carpeta del proyecto):
+
+```bash
+swipl -s anibot.pl
+```
+
 Al realizar la carga satisfactoriamente (se lee **true** en la pantalla), basta con llamar al predicado `chat/0` para interactuar con el bot.
 
 ```swipl
@@ -78,12 +84,21 @@ De igual forma, por defecto, tiene conocimiento de las siguientes series de anim
 - Yu-Gi-Oh!
 - Digimon
 - Eureka Seven
+- School Days
+- Free!
+- Cowboy Bebop
+- Planet Survival
+- Noir
+- Gundam
+- Accel World
 
 Cada animé cuenta con su información asociada de género o géneros (hasta 5), rating y popularidad, en función de lo establecido por el cuerpo profesional, reseñas de internet y apreciación personal de los estudiantes.
 
 ## Detalles de Implementación
 
 Esta sección describe algunos detalles de la implementación del bot de animé, decisiones de estructura y diseño, cambios con respecto a lo solicitado en el enunciado (si aplica), entre otros.
+
+**NOTA IMPORTANTE**: A menos que se indique de manera más explícita, las palabras clave / palabras reservadas / tokens que activan cada funcionalidad en el chatbot se muestran en *cursivas* en este documento.
 
 ### Nombre del archivo
 
@@ -298,7 +313,7 @@ Además de estar facultado para dar detalles y responder a consultas sobre temas
 
 ### Ayuda del programa
 
-El bot puede generar algunos mensajes de ayuda rudimentarios, muy básicos, para orientar a un usuario. Basta que en la consulta coloque las palabras "ayuda", "ayúdame", "help" o similares. **Note sin embargo** que la ayuda del bot es un complemento (en ocasiones jocoso) a la ayuda oficial del programa, que se encuentra en este documento.
+El bot puede generar algunos mensajes de ayuda rudimentarios, muy básicos, para orientar a un usuario. Basta que en la consulta coloque las palabras *ayuda*, *ayúdame*, *help* o similares. **Note sin embargo** que la ayuda del bot es un complemento (en ocasiones jocoso) a la ayuda oficial del programa, que se encuentra en este documento.
 
 Un ejemplo de uso de la ayuda (tomado de la ejecución del programa):
 

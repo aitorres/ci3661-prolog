@@ -46,7 +46,14 @@ anime(X) :- member(
         "Kuroshitsuji",
         "Yu-Gi-Oh!",
         "Digimon",
-        "Eureka Seven"
+		"Eureka Seven",
+		"School Days",
+		"Free!",
+		"Cowboy Bebop",
+		"Planet Survival",
+		"Noir",
+		"Gundam",
+		"Accel World"
     ]
 ).
     
@@ -97,8 +104,15 @@ generoAnime("Pokémon", ["Fantasía", "Aventura", "Kodomo"]).
 generoAnime("InuYasha", ["Aventura", "Shoujo"]).
 generoAnime("Kuroshitsuji", ["Shoujo"]).
 generoAnime("Yu-Gi-Oh!", ["Magia", "Ficción", "Shounen"]).
-generoAnime("Digimon", ["Fantasía", "Aventura", "Shounen"]).
+generoAnime("Digimon", ["Fantasía", "Aventura", "Shounen", "Kodomo"]).
 generoAnime("Eureka Seven", ["Aventura", "Mecha", "Magia"]).
+generoAnime("School Days", ["Shoujo", "Josei"]).
+generoAnime("Free!", ["Shoujo", "Josei"]).
+generoAnime("Cowboy Bebop", ["Ficción", "Aventura"]).
+generoAnime("Planet Survival", ["Ficción", "Aventura", "Shoujo"]).
+generoAnime("Noir", ["Ficción", "Aventura"]).
+generoAnime("Gundam", ["Mecha", "Aventura"]).
+generoAnime("Accel World", ["Mecha", "Aventura"]).
 
 /**
  * rating(X:string, Y:int)
@@ -126,6 +140,13 @@ rating("Kuroshitsuji", 2).
 rating("Yu-Gi-Oh!", 3).
 rating("Digimon", 4).
 rating("Eureka Seven", 3).
+rating("School Days", 2).
+rating("Free!", 2).
+rating("Cowboy Bebop", 5).
+rating("Planet Survival", 4).
+rating("Noir", 3).
+rating("Gundam", 3).
+rating("Accel World", 4).
 
 /**
  * popularidad(X:string, Y:int)
@@ -153,6 +174,13 @@ popularidad("Kuroshitsuji", 3).
 popularidad("Yu-Gi-Oh!", 7).
 popularidad("Digimon", 8).
 popularidad("Eureka Seven", 2).
+popularidad("School Days", 3).
+popularidad("Free!", 7).
+popularidad("Cowboy Bebop", 10).
+popularidad("Planet Survival", 6).
+popularidad("Noir", 2).
+popularidad("Gundam", 6).
+popularidad("Accel World", 7).
 
 /**
  * ratingPopularidad/2
