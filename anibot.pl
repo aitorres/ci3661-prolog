@@ -366,7 +366,13 @@ es_mensaje(
 		"Yuki:- Deberías leer mi manual de uso porque no te entendí.",
 		"Yuki:- Creo que no estamos hablando el mismo idioma.",
 		"Yuki:- ¿Aló? ¿Policía? Este humano me está diciendo cosas raras.",
-		"Yuki:- Necesitaré refuerzos bot para responderte."
+		"Yuki:- Necesitaré refuerzos bot para responderte.",
+		"Yuki:- Scusa, non parlo la lingua che stai parlando tu.",
+		"Yuki:- I'm sorry, Human, I'm afraid I can't let you do that.",
+		"Yuki:- No comprendí nada de lo que me intentaste decir.",
+		"Yuki:- Oops, no puedo ayudarte, pero quizás papá Andrés pueda.",
+		"Yuki:- Oops, no puedo ayudarte, pero quizás papá Gustavo pueda.",
+		"Yuki:- No sé qué decirte. Sigue tu corazón."
 	]
 ).
 
@@ -377,23 +383,28 @@ es_mensaje(
 		"Yuki:- Hago lo que puedo.",
 		"Yuki:- ¡A-a-ahh!~ D-de n-n-nada...",
 		"Yuki:- Agradecimiento aceptado.",
-		"Yuki:- Si sigues así, podríamos salir en una cita. Digo, de nada."
+		"Yuki:- Si sigues así, podríamos salir en una cita. Digo, de nada.",
+		"Yuki:- Siempre a la orden para ti.",
+		"Yuki:- Nani!~",
+		"Yuki:- No, GRACIAS a ti.",
+		"Yuki:- Nada que agradecer. Más bien, aprovecha mis conocimientos mientras puedas."
 	]
 ).
 
 es_mensaje(
-		"ayuda",
-		[
-			"Yuki:- Puedes leer mi Manual de Uso (README.txt o README.md) para conocer cómo funciono.",
-			"Yuki:- Pregúntame por uno o varios géneros (asegúrate de poner 'genero' y algún nombre de géneros en la consulta).",
-			"Yuki:- Puedes pasarme un criterio de popularidad, por ejemplo, pregúntame por animé poco conocidos.",
-			"Yuki:- Puedes preguntarme, si quieres, por un animé que sea bueno, o malo, o muy malo.",
-			"Yuki:- ¿Qué opinas de preguntar por animé de algún género, como Shounen?",
-			"Yuki:- Dime qué género te gusta y te recomendaré algunas cosas. Pero asegurate de decirme que te gusta, o no te entenderé.",
-			"Yuki:- Algunos géneros que conozco son: Mecha, Fantasía, Sobrenatural, Shounen, Shoujo...",
-			"Yuki:- Me da fastidio ayudarte ahorita. Pregúntame otra vez."
-		]
-	).
+	"ayuda",
+	[
+		"Yuki:- Puedes leer mi Manual de Uso (README.txt o README.md) para conocer cómo funciono.",
+		"Yuki:- Pregúntame por uno o varios géneros (asegúrate de poner 'genero' y algún nombre de géneros en la consulta).",
+		"Yuki:- Puedes pasarme un criterio de popularidad, por ejemplo, pregúntame por animé poco conocidos.",
+		"Yuki:- Puedes preguntarme, si quieres, por un animé que sea bueno, o malo, o muy malo.",
+		"Yuki:- ¿Qué opinas de preguntar por animé de algún género, como Shounen?",
+		"Yuki:- Dime qué género te gusta y te recomendaré algunas cosas. Pero asegurate de decirme que te gusta, o no te entenderé.",
+		"Yuki:- Algunos géneros que conozco son: Mecha, Fantasía, Sobrenatural, Shounen, Shoujo...",
+		"Yuki:- Me da fastidio ayudarte ahorita. Pregúntame otra vez.",
+		"Yuki:- Puedes pedirme listar animé con algún género, por rating y/o popularidad. ¿Qué dices?"
+	]
+).
 
 es_mensaje(
 	"inicio_sugerencia_animé",
@@ -402,7 +413,12 @@ es_mensaje(
 		"Yuki:- Creo que te gustaría ver ",
 		"Yuki:- Te recomiendo ver ",
 		"Yuki:- Te puedo sugerir el animé ",
-		"Yuki:- En mi opinión, podrías ver "
+		"Yuki:- En mi opinión, podrías ver ",
+		"Yuki:- Creo que podría gustarte ",
+		"Yuki:- Mi recomendación para ti: ",
+		"Yuki:- Hmm, podrías ver ",
+		"Yuki:- Acá tienes una opción: ",
+		"Yuki:- Entre nosotros los bots, es famoso " 
 	]
 ).
 
