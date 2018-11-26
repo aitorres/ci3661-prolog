@@ -893,8 +893,24 @@ listar_rating_alto_popularidad_baja:-
 	imprimir("Yuki:- Tengo eso por ahora. ¿Qué opinas? ¡Míralas y cuéntame luego!"),
 	fail.
 
+/**
+ * filtrar_anime_genero/2
+ * 
+ * filtrar_anime_genero(G, L), para una lista de géneros G, unifica en L todos los 
+ * animé que pertenecen a al menos algún género perteneciente a G.
+ */
 filtrar_anime_genero(G, L):-
 	findall(X, and(generoAnime(X, G1), intersection(G1, G, Gi), length(Gi, Largo), Largo > 0), L).
+
+/**
+ * filtrar_lista_orden/3
+ * 
+ * filtrar_lista_orden(L0, O, Lf), dado un orden O ("mayor" o "menor", por defecto asume "mayor"),
+ * ordena los elementos de la lista L0 en el orden introducido, ASUMIENDO que la lista L0 a primeras
+ * está ordenada de mayor a menor.
+ */ 
+filtrar_lista_orden(L0, "menor", Lf):- Lf = L0.
+filtrar_lista_orden(L0, _, Lf):- reverse(L0, Lf).
 
 filtrar_lista_clasificacion(L0, "ambos", Lf):-
 	findall(X, and(member(X, L0), anime_segun_ratingPopularidad(15, Lp15), member(X, Lp15)), L15),
@@ -956,12 +972,6 @@ filtrar_lista_clasificacion(L0, _, Lf):-
 	append(LP, L3, LP2),
 	append(LP2, L4, LP3),
 	append(LP3, L5, Lf).
-	
-filtrar_lista_orden(L0, O, Lf):-
-	(
-		(O == "mayor", reverse(L0, Lf));
-		(O == "menor", Lf = L0)
-	).
 
 consultar_anime_por_orden(M):-
 	parsear_generos(M, G),
