@@ -549,6 +549,19 @@ es_rating(M):-
 	).
 
 /**
+ * es_genero_rating/1
+ *
+ * es_genero_rating(M) acierta si la string M contiene alguna palabra
+ * clave que identifique que consulta sobre animés con cierto
+ * rating en un género (o géneros)
+ */
+es_genero_rating(M):-
+	(
+		es_palabra_de("estrellas", M); es_palabra_de("Estrellas", M);
+		es_palabra_de("estrella", M); es_palabra_de("Estrella", M)
+	).
+
+/**
  * es_agradecimiento/1
  *
  * es_agradecimiento(M) acierta si la string M contiene alguna palabra
@@ -610,6 +623,7 @@ es_consultar_anime_orden(M):-
 obtener_tema(M, "despedida"):- es_despedida(M), !.
 obtener_tema(M, "consultar-anime-orden"):- es_consultar_anime_orden(M), !.
 obtener_tema(M, "rating-alto-popularidad-baja"):- es_rating_alto_popularidad_baja(M), !.
+obtener_tema(M, "genero-rating"):- es_genero_rating(M), !.
 obtener_tema(M, "popularidad"):- es_popularidad(M), !.
 obtener_tema(M, "rating"):- es_rating(M), !.
 obtener_tema(M, "agradecimiento"):- es_agradecimiento(M), !.
@@ -713,7 +727,6 @@ parsear_orden(M, "menor"):-
 	nth0(I1, L, "menor"),
 	nth0(I2, L, "mayor"),
 	I1 < I2, !.
-
 parsear_orden(_, "mayor").
 
 /**
@@ -725,6 +738,25 @@ parsear_orden(_, "mayor").
 parsear_generos(M, G):-
 	separar_frase(M, F),
 	findall(X, and(member(X, F), genero(X)), G).
+
+/**
+ * parsear_estrellas/2
+ * 
+ * parsear_estrellas(M, N) ubica la palabra 'estrella' (o derivadas) en una frase y
+ * retorna un casteo a entero de la palabra inmediatamente anterior.
+ */
+parsear_estrellas(M, N):-
+	separar_frase(M, F),
+	(
+		nth0(I, F, "estrella"), !;
+		nth0(I, F, "estrellas"), !;
+		nth0(I, F, "Estrella"), !;
+		nth0(I, F, "Estrellas", !)
+	),
+	I2 is I-1, 
+	I2 >= 0, 
+	nth0(I2, F, Ns),
+	number_codes(N, Ns).
 
 /**
  * imprimir_sugerencias_de_anime/1
@@ -935,6 +967,27 @@ consultar_anime_por_orden(M):-
 	),
 	fail.
 
+consultar_anime_por_genero_y_rating(M):-
+	imprimir("Yuki:- Oh, comprendo. Déjame ver qué puedo responderte, un momento. *sonidos de modem de CANTV*"),
+	parsear_generos(M, G), !,
+	parsear_estrellas(M, E), !,
+	filtrar_anime_genero(G, L1),
+	findall(X, and(member(X, L1), anime_segun_rating(E, LR), member(X, LR)), Lf),
+	length(Lf, Tam), !,
+	(
+		(
+			Tam > 0, 
+			imprimir_sugerencias_de_anime(Lf),
+			imprimir("Yuki:- ¡Ojalá esto te sirva para que conozcas series nuevas!")
+		);
+		(	
+			Tam == 0,
+			imprimir("Yuki:- No encontré animé con tus filtros de búsqueda. ¿Me ayudas con eso?")
+		)
+	),
+	fail.
+
+
 % ==========================================================================
 % Funciones auxiliares de conversación del bot
 % ==========================================================================
@@ -966,6 +1019,7 @@ responder(M):-
     (
 		(T == "consultar-anime-orden", consultar_anime_por_orden(M));
 		(T == "rating-alto-popularidad-baja", listar_rating_alto_popularidad_baja);
+		(T == "genero-rating", consultar_anime_por_genero_y_rating(M));
 		(T == "popularidad", listar_por_popularidad_desde_mensaje(M));
 		(T == "rating", listar_por_rating_desde_mensaje(M));
     	(T == "despedida", halt);
