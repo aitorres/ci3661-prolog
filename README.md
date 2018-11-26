@@ -294,8 +294,6 @@ Además de estar facultado para dar detalles y responder a consultas sobre temas
 - Saludos y despedidas
 - Temas desconocidos
 
-@TODO: Describir más
-
 ## Otras observaciones
 
 ### Ayuda del programa
