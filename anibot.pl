@@ -544,8 +544,11 @@ es_popularidad(M):-
 es_rating(M):-
 	(
 		es_palabra_de("bueno", M); es_palabra_de("Bueno", M);
+		es_palabra_de("buenos", M); es_palabra_de("Buenos", M);
 		es_palabra_de("malo", M); es_palabra_de("Malo", M);
-		es_palabra_de("regular", M); es_palabra_de("Regular", M)
+		es_palabra_de("malos", M); es_palabra_de("Malos", M);
+		es_palabra_de("regular", M); es_palabra_de("Regular", M);
+		es_palabra_de("regulares", M); es_palabra_de("Regulares", M)
 	).
 
 /**
