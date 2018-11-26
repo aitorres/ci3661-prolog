@@ -253,6 +253,7 @@ Yuki:- No tengo más que decirte. Acepta mis recomendaciones.
 ```
 
 ### Consultas por género
+
 El bot está facultado (no saben cuántas veces he escrito esto) para listar animés de acuerdo a su género, al recibir una consulta que liste uno o varios géneros. El bot realiza este tipo de consultas si reconoce que alguien dice que le *gusta* o le *gustan* algunos géneros, o si dice directamente que quiere saber información de un *género* o unos *géneros* (y si la consulta no coincide con alguna de las anteriores, que tienen mayor precedencia).
 
 **NOTA IMPORTANTE**: Para que el bot reconozca un género, debe escribirse *TAL CUAL* figura en la lista de géneros, con mayúsculas y acentos si aplica.
