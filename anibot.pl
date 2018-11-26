@@ -12,6 +12,9 @@ géneros, ratings y popularidad.
 
 :- use_module(library(random)).
 
+% Comentario de los autores: Prolog debería tener este predicado nativo :-(
+and(A, B):- A, B.
+
 % ==========================================================================
 % Predicados sobre animé
 % ==========================================================================
@@ -644,6 +647,26 @@ parsear_rating(M, P):- es_palabra_de("bueno", M), !, P = 4.
 parsear_rating(M, P):- es_palabra_de("muy", M), es_palabra_de("malo", M), !, P = 1.
 parsear_rating(M, P):- es_palabra_de("malo", M), !, P = 2.
 parsear_rating(_, P):- !, P = 3.
+
+/**
+ * parsear_orden/2
+ * 
+ * parsear_orden(M, O) determina en qué orden se debe mostrar una consulta según lo
+ * solicitado en la frase, hallando la primera palabra entre mayor y menor en la frase
+ * y asumiendo que ahí comienza su orden. Por defecto, se ordena de mayor a menor.
+ */
+parsear_orden(M, "menor"):- es_palabra_de("menor", M), !.
+parsear_orden(_, "mayor").
+
+/**
+ * parsear_generos/2
+ * 
+ * parsear_generos(M, G) determina qué palabras de M corresponden a géneros de animé
+ * válidos y los unifica en una lista en G.
+ */
+parsear_generos(M, G):-
+	separar_frase(M, F),
+	findall(X, and(member(X, F), genero(X)), G).
 
 /**
  * imprimir_sugerencias_de_anime/1
