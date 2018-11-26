@@ -175,6 +175,27 @@ anime_segun_popularidad(P, L):-
 	10 >= P,
 	findall(X, popularidad(X, P), L).
 
+/**
+ * tiene_genero/2
+ * 
+ * Si G es un género válido y A un animé válido, acierta si el animé
+ * A tiene a G entre sus géneros.
+ */
+tiene_genero(G, A):-
+	genero(G), anime(A), !,
+	generoAnime(A, L),
+	member(G, L).
+
+/**
+ * anime_segun_genero/2
+ *
+ * Si G es un genero de animé válido, unifica en L una lista con todos los
+ * animé cuyo género es G.
+ */
+anime_segun_genero(G, L):-
+	genero(G), !,
+	findall(X, tiene_genero(G, X), L).
+
 % ==========================================================================
 % Mensajes del bot
 % ==========================================================================
