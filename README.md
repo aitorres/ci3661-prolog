@@ -184,6 +184,27 @@ Yuki:- Te puedo sugerir el animé HunterXHunter que tiene un rating de 5 estrell
 Yuki:- Tengo eso por ahora. ¿Qué opinas? ¡Míralas y cuéntame luego!
 ```
 
+### Consultas por género y rating
+
+El bot está facultado para responder ante consultas de listado de animés de un género (o varios géneros) con alguna cantidad de estrellas. El bot reconoce este tipo de consultas cuando se pregunta por *estrellas* o por una *estrella*, esperando que se introduzca un número antes de esta palabra.
+
+**NOTA IMPORTANTE**: Para que el bot reconozca un género, debe escribirse *TAL CUAL* figura en la lista de géneros, con mayúsculas y acentos si aplica.
+
+Por ejemplo (tomado de la ejecución del programa):
+
+```swipl
+?- chat.
+Yuki:- Hola, alguien osó despertarme. ¿Qué tal?
+Yo:- Todo fino. Mira, ¿me puedes dar animé Fantasía o Shounen con 4 estrellas?
+Yuki:- Oh, comprendo. Déjame ver qué puedo responderte, un momento. *sonidos de modem de CANTV*
+Yuki:- Podrías ver el animé Bleach que tiene un rating de 4 estrellas y una popularidad de 8 sobre 10 (sumados dan 12).
+Yuki:- Creo que te gustaría ver Full Metal Alchemist que tiene un rating de 4 estrellas y una popularidad de 1 sobre 10 (sumados dan 5).
+Yuki:- Creo que te gustaría ver Sword Art Online que tiene un rating de 4 estrellas y una popularidad de 9 sobre 10 (sumados dan 13).
+Yuki:- En mi opinión, podrías ver Pokémon que tiene un rating de 4 estrellas y una popularidad de 10 sobre 10 (sumados dan 14).
+Yuki:- Te puedo sugerir el animé Digimon que tiene un rating de 4 estrellas y una popularidad de 8 sobre 10 (sumados dan 12).
+Yuki:- ¡Ojalá esto te sirva para que conozcas series nuevas!
+```
+
 ### Consultas por popularidad
 
 El bot está facultado para responder ante consultas para conocer animés de acuerdo a su popularidad (indicador numérico entre 1 y 10). La manera para realizar estas consultas es mediante preguntas por algún animé que sea:
