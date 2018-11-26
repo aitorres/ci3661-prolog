@@ -252,6 +252,35 @@ Yuki:- En mi opinión, podrías ver Attack on Titan que tiene un rating de 5 est
 Yuki:- No tengo más que decirte. Acepta mis recomendaciones.
 ```
 
+### Consultas por género
+El bot está facultado (no saben cuántas veces he escrito esto) para listar animés de acuerdo a su género, al recibir una consulta que liste uno o varios géneros. El bot realiza este tipo de consultas si reconoce que alguien dice que le *gusta* o le *gustan* algunos géneros, o si dice directamente que quiere saber información de un *género* o unos *géneros* (y si la consulta no coincide con alguna de las anteriores, que tienen mayor precedencia).
+
+**NOTA IMPORTANTE**: Para que el bot reconozca un género, debe escribirse *TAL CUAL* figura en la lista de géneros, con mayúsculas y acentos si aplica.
+
+Por ejemplo (tomado de la ejecución del programa):
+
+```swipl
+?- chat.
+Yuki:- *sonidos de modem telefónico de CANTV conectándose* Hola.
+Yo:- Mira, sí, me gusta la Fantasía.
+Yuki:- Veamos qué puedo hacer por ti. Si me quieres ayudar, ¡alza tus manos al cielo!
+Yuki:- Podrías ver el animé Suzumiya Haruhi no Yuutsu que tiene un rating de 3 estrellas y una popularidad de 6 sobre 10 (sumados dan 9).
+Yuki:- Te recomiendo ver Sword Art Online que tiene un rating de 4 estrellas y una popularidad de 9 sobre 10 (sumados dan 13).
+Yuki:- Te puedo sugerir el animé Pokémon que tiene un rating de 4 estrellas y una popularidad de 10 sobre 10 (sumados dan 14).
+Yuki:- Te recomiendo ver Digimon que tiene un rating de 4 estrellas y una popularidad de 8 sobre 10 (sumados dan 12).
+Yuki:- ¡Pero no te encasilles en unos pocos géneros, abre tu mente!
+Yo:- ¿Y qué me dices de los géneros Shounen y Mecha?
+Yuki:- Veamos qué puedo hacer por ti. Si me quieres ayudar, ¡alza tus manos al cielo!
+Yuki:- Te recomiendo ver Naruto que tiene un rating de 1 estrellas y una popularidad de 5 sobre 10 (sumados dan 6).
+Yuki:- Creo que te gustaría ver Dragon Ball que tiene un rating de 3 estrellas y una popularidad de 7 sobre 10 (sumados dan 10).
+Yuki:- Te puedo sugerir el animé Bleach que tiene un rating de 4 estrellas y una popularidad de 8 sobre 10 (sumados dan 12).
+Yuki:- Creo que te gustaría ver Full Metal Alchemist que tiene un rating de 4 estrellas y una popularidad de 1 sobre 10 (sumados dan 5).
+Yuki:- En mi opinión, podrías ver Yu-Gi-Oh! que tiene un rating de 3 estrellas y una popularidad de 7 sobre 10 (sumados dan 10).
+Yuki:- Podrías ver el animé Digimon que tiene un rating de 4 estrellas y una popularidad de 8 sobre 10 (sumados dan 12).
+Yuki:- Te puedo sugerir el animé Eureka Seven que tiene un rating de 3 estrellas y una popularidad de 2 sobre 10 (sumados dan 5).
+Yuki:- ¡Pero no te encasilles en unos pocos géneros, abre tu mente!
+```
+
 ### Temas adicionales
 
 Además de estar facultado para dar detalles y responder a consultas sobre temas relacionados a series de animé, el bot está (medianamente) facultado para responder (jocosamente) a consultas sobre:
