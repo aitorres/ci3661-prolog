@@ -849,6 +849,22 @@ parsear_estrellas(M, N):-
 	number_codes(N, Ns).
 
 /**
+ * parsear_popularidad_agregar/2
+ * 
+ * parsear_popularidad_agregar(M, N) ubica la palabra 'popularidad' (o derivadas) en una frase y
+ * retorna un casteo a entero de la palabra inmediatamente siguiente.
+ */
+parsear_popularidad_agregar(M, N):-
+	separar_frase(M, F),
+	(
+		nth0(I, F, "popularidad"), !;
+		nth0(I, F, "popular"), !
+	),
+	I2 is I+1,  
+	nth0(I2, F, Ns),
+	number_codes(N, Ns).
+
+/**
  * imprimir_sugerencias_de_anime/1
  *
  * imprimir_sugerencias_de_anime(L) recibe una lista de nombres de animé e imprime frases
@@ -1223,13 +1239,21 @@ responder(M):-
 			parsear_estrellas(M, Rating),
 			% Agregamos el animé
 			insertar_espacios(Titulo, TituloString),
+
 			assertz(anime(TituloString)),
-			
 			assertz(generoAnime(TituloString, Generos)),
 			assertz(rating(TituloString, Rating)),
-			assertz(popularidad(TituloString, 1)),
 
-			string_concat("Ok, ahora recordaré ", TituloString, Respuesta),
+			(
+				(
+					es_palabra_de("popularidad", M), 
+					parsear_popularidad_agregar(M, N),
+					assertz(popularidad(TituloString, N))
+				);
+				not(es_palabra_de("popularidad", M)), assertz(popularidad(TituloString, 1))
+			), !,
+
+			string_concat("Yuki:- Okay, ahora recordaré ", TituloString, Respuesta),
 			imprimir(Respuesta),
 			fail
 		);

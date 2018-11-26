@@ -99,6 +99,22 @@ Se garantiza el reconocimiento de las frases especificadas en este documento **s
 
 Algunas de las posibles respuestas del bot se obtienen de manera aleatoria de una base de datos de respuestas de acuerdo al tema, para darle más dinamismo y cierta personalidad. La lista completa de mensajes puede encontrarse en las definiciones de las reglas `es_mensaje` en [anibot.pl](anibot.pl).
 
+### Agregar un nuevo animé
+
+El bot permite agregar nuevos animés a la lista de animé en su base de datos de manera dinámica. La palabra clave de este tipo de consultas es *nuevo*, y la sintaxis debe seguir la siguiente (de ejemplo):
+
+```
+Conozco un nuevo animé llamado Kimi No Nawa de 4 estrellas y de tipo Fantasía
+```
+
+Opcionalmente, se puede reconocer la popularidad:
+
+```
+Conozco un nuevo animé llamado Kimi No Nawa de 4 estrellas y de tipo Fantasía de popularidad 7
+```
+
+Un ejemplo (tomado de la ejecución del programa) sigue:
+
 ### Consultas de animé por género, tipo de consulta y orden
 
 El bot está facultado para responder ante consultas para listar animés que pertenezcan algún género dado, siguiendo un orden dado en enumeración y con algún criterio de orden.
