@@ -48,7 +48,7 @@ Se garantiza el reconocimiento de las frases especificadas en este documento **s
 Algunas de las posibles respuestas del bot se obtienen de manera aleatoria de una base de datos de respuestas de acuerdo al tema, para darle más dinamismo y cierta personalidad. La lista completa de mensajes puede encontrarse en las definiciones de las reglas `es_mensaje` en [anibot.pl](anibot.pl).
 
 ### Consultas por rating alto y popularidad baja
-El bot está facultado para responder ante consultas sobre animés con **rating alto** y **popularidad baja**. A efectos de implementación, y al quedar a libre decisión del programador, se tomó como **valores de rating alto** los de **4 y 5 estrellas** (ambos inclusive), y **valores de popularidad baja** los de **1 a 3 sobre 10** (ambos inclusive).
+El bot está facultado para responder ante consultas sobre animés con **rating alto** y **popularidad baja**. A efectos de implementación, y al quedar a libre decisión del programador, se tomó como **valores de rating alto** los de **4 y 5 estrellas** (ambos inclusive), y **valores de popularidad baja** los de **1 a 4 sobre 10** (ambos inclusive).
 
 Para utilizar esta funcionalidad, se puede consultar sobre algún animé *bueno* y *poco conocido*, o *interesante* y *poco conocido*. Por ejemplo (tomado de la ejecución del programa):
 
